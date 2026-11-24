@@ -9,26 +9,22 @@ const { title = 'Zerix Securities — Think Cyber, Think Zerix', description = '
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#faf8fd" />
+    <meta name="theme-color" content="#fbf9fe" />
     <link rel="icon" type="image/png" href="/logo.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
   </head>
   <body>
     <slot />
     <script>
-      // Reveal-on-scroll
       const els = document.querySelectorAll('.reveal');
       if ('IntersectionObserver' in window) {
         const io = new IntersectionObserver((entries) => {
           entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
         }, { threshold: 0.15 });
         els.forEach((el) => io.observe(el));
-      } else {
-        els.forEach((el) => el.classList.add('in'));
-      }
-      // Header shadow on scroll
+      } else { els.forEach((el) => el.classList.add('in')); }
       const header = document.querySelector('.site-header');
       const onScroll = () => header?.classList.toggle('scrolled', window.scrollY > 8);
       window.addEventListener('scroll', onScroll, { passive: true });
