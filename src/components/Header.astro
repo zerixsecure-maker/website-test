@@ -1,7 +1,7 @@
 ---
 import { navLinks } from '../data/site';
 const { current = '' } = Astro.props;
-const here = (href: string) => (current && href.replace(/\//g, '') === current ? 'page' : undefined);
+const here = (href?: string) => (href && current && href.replace(/\//g, '') === current ? 'page' : undefined);
 ---
 <header class="site-header">
   <div class="wrap nav">
@@ -11,7 +11,16 @@ const here = (href: string) => (current && href.replace(/\//g, '') === current ?
     </a>
     <nav aria-label="Main">
       <ul class="desk-nav">
-        {navLinks.map((l) => <li><a href={l.href} aria-current={here(l.href)}>{l.label}</a></li>)}
+        {navLinks.map((l) => l.children ? (
+          <li class="has-sub">
+            <button type="button" class="sub-btn" aria-haspopup="true" aria-expanded="false">{l.label}<svg viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <ul class="sub">
+              {l.children.map((c) => <li><a href={c.href}>{c.label}</a></li>)}
+            </ul>
+          </li>
+        ) : (
+          <li><a href={l.href} aria-current={here(l.href)}>{l.label}</a></li>
+        ))}
       </ul>
     </nav>
     <a href="/#presence" class="btn btn-primary">Contact us <span class="arr">→</span></a>
@@ -19,7 +28,13 @@ const here = (href: string) => (current && href.replace(/\//g, '') === current ?
   </div>
   <nav class="mobile-nav" id="mnav" aria-label="Mobile">
     <ul>
-      {navLinks.map((l) => <li><a href={l.href} aria-current={here(l.href)}>{l.label}</a></li>)}
+      {navLinks.map((l) => l.children ? (
+        <li class="m-group"><span>{l.label}</span>
+          <ul>{l.children.map((c) => <li><a href={c.href}>{c.label}</a></li>)}</ul>
+        </li>
+      ) : (
+        <li><a href={l.href} aria-current={here(l.href)}>{l.label}</a></li>
+      ))}
       <li><a href="/#presence" class="btn btn-primary">Contact us <span class="arr">→</span></a></li>
     </ul>
   </nav>

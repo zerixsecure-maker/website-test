@@ -685,3 +685,22 @@ footer { padding: 1.5rem 0 2.75rem; color: var(--muted); font-size: .88rem; }
 @media (prefers-reduced-motion: reduce) { .pulse-dot { animation: none; } }
 html { scroll-padding-top: 5.5rem; }
 @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+
+/* ---------- Company dropdown ---------- */
+.desk-nav { align-items: center; }
+.has-sub { position: relative; }
+.sub-btn { display: inline-flex; align-items: center; gap: .4rem; background: none; border: 0; padding: .375rem 0; font: inherit; color: inherit; cursor: pointer; transition: color .2s; }
+.sub-btn:hover, .has-sub.open .sub-btn { color: var(--p-900); }
+.sub-btn svg { width: .6rem; height: .4rem; transition: transform .25s; }
+.has-sub:hover .sub-btn svg, .has-sub.open .sub-btn svg, .has-sub:focus-within .sub-btn svg { transform: rotate(180deg); }
+.desk-nav .sub { position: absolute; left: -1rem; top: 100%; display: grid; gap: .1rem; min-width: 14.5rem; padding: .6rem; margin-top: .55rem; background: rgba(255,255,255,.98); border: 1px solid var(--line); border-radius: .9rem; box-shadow: 0 24px 50px rgba(43,20,80,.14); opacity: 0; visibility: hidden; transform: translateY(-.4rem); transition: opacity .2s, transform .2s, visibility .2s; z-index: 5; }
+.desk-nav .sub::before { content: ''; position: absolute; left: 0; right: 0; top: -.7rem; height: .7rem; }
+.has-sub:hover > .sub, .has-sub.open > .sub, .has-sub:focus-within > .sub { opacity: 1; visibility: visible; transform: none; }
+.desk-nav .sub li a { display: block; padding: .6rem .8rem; border-radius: .55rem; color: var(--ink); font-size: .92rem; white-space: nowrap; }
+.desk-nav .sub li a::after { display: none; }
+.desk-nav .sub li a:hover { background: var(--tint); color: var(--p-800); }
+/* mobile grouping */
+.mobile-nav .m-group > span { display: block; padding: .95rem .25rem .4rem; font: 500 .72rem var(--mono); letter-spacing: .16em; text-transform: uppercase; color: var(--p-600); }
+.mobile-nav .m-group ul { display: grid; padding: 0 0 .4rem .75rem; margin: 0; list-style: none; border-bottom: 1px solid var(--line); }
+.mobile-nav .m-group li a:not(.btn) { padding: .7rem .25rem; font-size: 1rem; border-bottom: 0; }
+@media (prefers-reduced-motion: reduce) { .desk-nav .sub, .sub-btn svg { transition: none; } }

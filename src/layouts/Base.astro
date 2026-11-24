@@ -83,7 +83,16 @@ const ld = {
       const setMenu = (o) => { header?.classList.toggle('menu-open', o); btn?.setAttribute('aria-expanded', String(o)); btn?.setAttribute('aria-label', o ? 'Close menu' : 'Open menu'); };
       btn?.addEventListener('click', () => setMenu(!header?.classList.contains('menu-open')));
       document.querySelectorAll('.mobile-nav a').forEach((a) => a.addEventListener('click', () => setMenu(false)));
-      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setMenu(false); });
+      const subs = [...document.querySelectorAll<HTMLElement>('.has-sub')];
+      const closeSubs = () => subs.forEach((s) => { s.classList.remove('open'); s.querySelector('.sub-btn')?.setAttribute('aria-expanded', 'false'); });
+      subs.forEach((s) => s.querySelector('.sub-btn')?.addEventListener('click', (e) => {
+        e.stopPropagation(); const o = !s.classList.contains('open'); closeSubs();
+        s.classList.toggle('open', o); s.querySelector('.sub-btn')?.setAttribute('aria-expanded', String(o));
+      }));
+      subs.forEach((s) => { s.addEventListener('mouseenter', () => s.querySelector('.sub-btn')?.setAttribute('aria-expanded', 'true')); s.addEventListener('mouseleave', () => s.querySelector('.sub-btn')?.setAttribute('aria-expanded', String(s.classList.contains('open')))); });
+      document.querySelectorAll('.sub a').forEach((a) => a.addEventListener('click', closeSubs));
+      document.addEventListener('click', closeSubs);
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { setMenu(false); closeSubs(); } });
     </script>
   </body>
 </html>

@@ -26,11 +26,15 @@ export const instagram = {
   profileUrl: 'https://www.instagram.com/zerixsecurities/',
 };
 
-// Main navigation. Links to pages that are not built yet point at "coming soon" pages.
-export const navLinks = [
-  { label: 'Why Cyber', href: '/why-cyber/' },
+// Main navigation. An item with `children` becomes a dropdown (desktop) / grouped list (mobile).
+export const navLinks: { label: string; href?: string; children?: { label: string; href: string }[] }[] = [
+  { label: 'Company', children: [
+    { label: 'Our approach', href: '/#approach' },
+    { label: 'Sectors we serve', href: '/#sectors' },
+    { label: 'Clients', href: '/#clients' },
+    { label: 'Latest from Zerix', href: '/#linkedin' },
+  ] },
   { label: 'Services', href: '/#services' },
-  { label: 'Trainings', href: '/#training' },
-  { label: 'White Papers', href: '/white-papers/' },
   { label: 'Products', href: '/products/' },
+  { label: 'Why Cyber', href: '/why-cyber/' },
 ];
