@@ -1,0 +1,10 @@
+---
+import { company } from '../data/site';
+---
+<footer>
+  <div class="wrap foot">
+    <span><strong>ZERIX SECURITIES</strong> — Think Cyber, Think Zerix</span>
+    <span class="foot-links"><a href={`mailto:${company.email}`}>{company.email}</a><a href={`tel:${company.phoneHref}`}>{company.phone}</a></span>
+    <span>© {new Date().getFullYear()} Zerix Securities. All rights reserved.</span>
+  </div>
+</footer>

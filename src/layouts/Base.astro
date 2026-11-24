@@ -5,6 +5,7 @@ const {
   title = 'Zerix Securities | Cybersecurity Audit, VAPT, Compliance & Assurance in India',
   description = 'Zerix Securities is a Mumbai cybersecurity and GRC firm. We find security gaps, fix them and prove compliance: cybersecurity audits, VAPT, certifications, data protection, OT security and regulatory audits.',
   path = Astro.url.pathname,
+  noindex = false,
 } = Astro.props;
 const site = (Astro.site ?? new URL('https://zerixsecurities.com')).toString().replace(/\/$/, '');
 const url = site + path;
@@ -36,7 +37,7 @@ const ld = {
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={url} />
-    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large'} />
     <meta name="theme-color" content="#fbf9fe" />
     <meta name="author" content={company.name} />
     <meta property="og:type" content="website" />

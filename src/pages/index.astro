@@ -1,5 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
 import NetworkBg from '../components/NetworkBg.astro';
 import LinkedIn from '../components/LinkedIn.astro';
 import Clients from '../components/Clients.astro';
@@ -26,30 +28,7 @@ const services = [
 
 ---
 <Base>
-  <header class="site-header">
-    <div class="wrap nav">
-      <a href="/" class="brand" aria-label="Zerix Securities home">
-        <img src="/logo.png" alt="" width="596" height="419" decoding="async" />
-        <span class="word"><b>ZERIX</b><small>Securities</small></span>
-      </a>
-      <ul class="desk-nav">
-        <li><a href="#linkedin">Latest</a></li>
-        <li><a href="#clients">Clients</a></li>
-        <li><a href="#approach">Approach</a></li>
-        <li><a href="#sectors">Sectors</a></li>
-        <li><a href="#services">Services</a></li>
-        <li><a href="#presence">Contact</a></li>
-      </ul>
-      <a href="#presence" class="btn btn-primary">Contact us <span class="arr">→</span></a>
-      <button class="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="mnav"><i></i><i></i><i></i></button>
-    </div>
-    <nav class="mobile-nav" id="mnav" aria-label="Mobile">
-      <ul>
-        <li><a href="#linkedin">Latest</a></li><li><a href="#clients">Clients</a></li><li><a href="#approach">Approach</a></li><li><a href="#sectors">Sectors</a></li><li><a href="#services">Services</a></li><li><a href="#presence">Contact</a></li>
-        <li><a href="#presence" class="btn btn-primary">Contact us <span class="arr">→</span></a></li>
-      </ul>
-    </nav>
-  </header>
+  <Header />
 
   <main id="main">
     <!-- HERO -->
@@ -169,7 +148,7 @@ const services = [
 
 
         <!-- TRAINING -->
-        <div class="managed rev reveal">
+        <div class="managed rev reveal" id="training">
           <div class="m-viz t-viz" aria-hidden="true">
             <div class="t-card">
               <div class="t-cap"><svg viewBox="0 0 24 24"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11.5V16c0 1.5 2.7 3 6 3s6-1.5 6-3v-4.5"/><path d="M22 9v6"/></svg></div>
@@ -217,13 +196,7 @@ const services = [
     </section>
   </main>
 
-  <footer>
-    <div class="wrap foot">
-      <span><strong>ZERIX SECURITIES</strong> — Think Cyber, Think Zerix</span>
-      <span class="foot-links"><a href={`mailto:${company.email}`}>{company.email}</a><a href={`tel:${company.phoneHref}`}>{company.phone}</a></span>
-      <span>© {new Date().getFullYear()} Zerix Securities. All rights reserved.</span>
-    </div>
-  </footer>
+  <Footer />
 
   <script>
     // ---- Hero carousel (5s per message) ----

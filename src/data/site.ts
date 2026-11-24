@@ -23,5 +23,14 @@ export const offices = [
 
 export const instagram = {
   // Paste the Instagram profile link here, e.g. 'https://www.instagram.com/yourhandle/'
-  profileUrl: '',
+  profileUrl: 'https://www.instagram.com/zerixsecurities/',
 };
+
+// Main navigation. Links to pages that are not built yet point at "coming soon" pages.
+export const navLinks = [
+  { label: 'Why Cyber', href: '/why-cyber/' },
+  { label: 'Services', href: '/#services' },
+  { label: 'Trainings', href: '/#training' },
+  { label: 'White Papers', href: '/white-papers/' },
+  { label: 'Products', href: '/products/' },
+];

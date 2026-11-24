@@ -15,9 +15,11 @@ const feed = (posts as { id: string; date: string; text: string; link?: string; 
 const igUrl = instagram.profileUrl || '';
 const igHandle = (() => { try { return new URL(igUrl).pathname.split('/').filter(Boolean)[0] || ''; } catch { return ''; } })();
 const igPics = feed.filter((f) => f.image).map((f) => f.image);
-const igTiles = [
-  { t: 'VAPT', v: 1 }, { t: 'Audit & Assurance', v: 2 }, { t: 'Data Protection', v: 3 }, { t: 'OT Security', v: 2 },
-  { t: 'Training', v: 3 }, { t: 'Certifications', v: 1 }, { t: 'Compliance', v: 2 }, { t: 'Think Cyber', v: 1 }, { t: 'Think Zerix', v: 3 },
+// 9 tiles: generated service posts, with the real posters in the middle and right columns of row 1
+const igSrc = [
+  '/posts/ig-1.jpg', igPics[0] || '/posts/ig-2.jpg', igPics[1] || '/posts/ig-3.jpg',
+  '/posts/ig-2.jpg', '/posts/ig-3.jpg', '/posts/ig-4.jpg',
+  '/posts/ig-5.jpg', '/posts/ig-6.jpg', '/posts/ig-7.jpg',
 ];
 const highlights = ['Services', 'VAPT', 'Audit', 'Training'];
 ---
@@ -51,10 +53,7 @@ const highlights = ['Services', 'VAPT', 'Audit', 'Training'];
             <div class="ig-hl">{highlights.map((h) => <span><i><em></em></i>{h}</span>)}</div>
             <div class="ig-tabs" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
             <div class="ig-grid">
-              {igTiles.map((t, i) => (
-                (i >= 1 && igPics[i - 1]) ? <span class="ig-t pic"><img src={igPics[i - 1]} alt="" loading="lazy" decoding="async" /></span>
-                : <span class={'ig-t v' + t.v}><b>{t.t}</b></span>
-              ))}
+              {igSrc.map((src) => <span class="ig-t pic"><img src={src} alt="" loading="lazy" decoding="async" /></span>)}
             </div>
           </div>
         </div>

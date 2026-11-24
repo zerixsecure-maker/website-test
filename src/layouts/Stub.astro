@@ -1,0 +1,25 @@
+---
+import Base from './Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import NetworkBg from '../components/NetworkBg.astro';
+import { company } from '../data/site';
+const { slug, kicker, title, lead } = Astro.props;
+---
+<Base title={`${title} | Zerix Securities`} description={lead} noindex={true}>
+  <Header current={slug} />
+  <main id="main" class="stub">
+    <NetworkBg />
+    <div class="wrap stub-in">
+      <div class="kicker">{kicker}</div>
+      <h1>{title}</h1>
+      <p class="stub-lead">{lead}</p>
+      <p class="stub-note"><span class="pulse-dot"></span> This page is being built. It will be live here soon.</p>
+      <div class="stub-btns">
+        <a class="btn btn-primary" href="/">Back to home <span class="arr">→</span></a>
+        <a class="btn btn-ghost" href={`mailto:${company.email}`}>Talk to an expert</a>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</Base>
