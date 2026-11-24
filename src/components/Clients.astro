@@ -1,0 +1,30 @@
+---
+// NOTE: logos are placeholder wordmarks. Replace with real logo files in /public/clients/.
+const A = ['Jainam Electronics', 'Mahavir Tube', 'Yash Optics', 'Trover Solutions', 'IEMA Labs'];
+const B = ['Gili Tech', 'Vernife', 'Abilini', 'Facet Flare', 'Arch', 'O-Locker'];
+const mono = (n: string) => n.replace(/[^A-Za-z ]/g, '').split(' ').map((w) => w[0]).join('').slice(0, 2).toUpperCase();
+const glyphs = Array.from({ length: 14 }, (_, i) => ({ l: (i * 71 + 7) % 96, d: (i * 1.9) % 16, t: 15 + ((i * 5) % 10), s: 0.7 + ((i * 37) % 8) / 10 }));
+---
+<section id="clients" class="clients">
+  <div class="cl-bg" aria-hidden="true">
+    {glyphs.map((g) => (
+      <svg class="gl" viewBox="0 0 24 24" style={`left:${g.l}%;animation-delay:-${g.d}s;animation-duration:${g.t}s;--s:${g.s}`}>
+        <path d="M12 3l8 3v6c0 4.5-3.2 7.8-8 9-4.8-1.2-8-4.5-8-9V6z" /><path d="M9 12l2 2 4-4" />
+      </svg>
+    ))}
+  </div>
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="kicker">Clientele</div>
+      <h2>Trusted by organisations across industries.</h2>
+      <p>From one-off audits to fully managed security, we meet each client where they are.</p>
+    </div>
+  </div>
+  <div class="marq reveal">
+    <div class="track">{[...A, ...A, ...A, ...A].map((n) => <div class="logo"><i>{mono(n)}</i><span>{n}</span></div>)}</div>
+  </div>
+  <div class="wire" aria-hidden="true"></div>
+  <div class="marq rev reveal" style="--d:.1s">
+    <div class="track">{[...B, ...B, ...B, ...B].map((n) => <div class="logo"><i>{mono(n)}</i><span>{n}</span></div>)}</div>
+  </div>
+</section>

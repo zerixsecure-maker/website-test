@@ -1,0 +1,31 @@
+---
+import { linkedin } from '../data/site';
+---
+<section id="linkedin" class="flow-bg li-sec">
+  <div class="wrap li">
+    <div class="reveal">
+      <div class="kicker">Latest from Zerix</div>
+      <h2 style="font-size:clamp(2rem,3.6vw,2.9rem)">Follow our thinking, straight from the field.</h2>
+      <p class="li-p">Insights, advisories and updates from our team — as we publish them on LinkedIn.</p>
+      <a class="btn btn-primary" href={linkedin.companyUrl || '#'} target="_blank" rel="noopener">Follow us on LinkedIn <span class="arr">→</span></a>
+    </div>
+    <div class="phone-wrap reveal" style="--d:.1s">
+      <div class="p-rings" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="phone">
+        <span class="notch"></span>
+        <div class="screen">
+          {linkedin.embedUrl ? (
+            <iframe src={linkedin.embedUrl} title="Latest post from Zerix Securities on LinkedIn" loading="lazy" allowfullscreen></iframe>
+          ) : (
+            <div class="ph">
+              <div class="ph-head"><img src="/logo.png" alt="" /><div><b>Zerix Securities</b><span class="sk w40"></span></div></div>
+              <span class="sk w100"></span><span class="sk w90"></span><span class="sk w70"></span>
+              <div class="ph-img"></div>
+              <small>Your latest LinkedIn post appears here</small>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

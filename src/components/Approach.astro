@@ -1,0 +1,109 @@
+---
+const steps = [
+  { t: 'Understand the roots', d: 'We begin with your organisation itself: its business, people, data and the regulations it operates under.' },
+  { t: 'Map the root infrastructure', d: 'A forensic-style review of systems, networks, access and data flows — examined as evidence, not assumptions.' },
+  { t: 'Pinpoint root causes', d: 'We trace every weakness back to its source and rank it by real business impact.' },
+  { t: 'Consult and recommend', d: 'Clear, tailored recommendations from consultants who have seen how things fail.' },
+  { t: 'Implement and prove', d: "We don't stop at advice. We help implement, then deliver evidence that stands up to auditors and regulators." },
+];
+const L1 = [{ x: 85, t: 'PEOPLE' }, { x: 230, t: 'PROCESS' }, { x: 375, t: 'TECHNOLOGY' }];
+const L2 = [{ x: 50, t: 'ACCESS' }, { x: 140, t: 'DATA' }, { x: 230, t: 'NETWORK' }, { x: 320, t: 'CLOUD' }, { x: 410, t: 'ENDPOINTS' }];
+const l12 = [[0, 0], [0, 1], [1, 2], [2, 3], [2, 4]];
+const pills = [{ x: 100, t: 'POLICY' }, { x: 230, t: 'CONTROLS' }, { x: 360, t: 'ROADMAP' }];
+---
+<section id="approach" class="flow-bg">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="kicker">Approach</div>
+      <h2>Forensic-driven, from the roots up.</h2>
+      <p>Forensics is our foundation. We don't guess where risk lives — we trace it to its source, then help you fix it. Think Cyber, Think Zerix.</p>
+      <ul class="pillars"><li>Consultation</li><li>Implementation</li><li>Training</li></ul>
+    </div>
+
+    <div class="approach">
+      <ol class="tl" id="tl">
+        <span class="fill"></span>
+        {steps.map((s, i) => (
+          <li class={`tstep${i === 0 ? ' on' : ''}`} data-i={i}>
+            <span class="no">{String(i + 1).padStart(2, '0')}</span>
+            <h3>{s.t}</h3>
+            <p>{s.d}</p>
+          </li>
+        ))}
+      </ol>
+
+      <div class="viz-col">
+        <svg class="viz2" id="viz" viewBox="0 0 460 560" data-s="1" aria-hidden="true">
+          <defs>
+            <linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#4b2678" /><stop offset="1" stop-color="#7a3fb0" /></linearGradient>
+            <linearGradient id="bg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b46fd8" stop-opacity="0" /><stop offset=".5" stop-color="#b46fd8" stop-opacity=".22" /><stop offset="1" stop-color="#b46fd8" stop-opacity="0" /></linearGradient>
+          </defs>
+
+          <g class="vgrid">{Array.from({ length: 12 }, (_, k) => <line x1="0" x2="460" y1={k * 48 + 8} y2={k * 48 + 8} />)}{Array.from({ length: 10 }, (_, k) => <line y1="0" y2="560" x1={k * 48 + 10} x2={k * 48 + 10} />)}</g>
+          <text class="case" x="2" y="14">CASE FILE · ROOT CAUSE ANALYSIS</text>
+
+          <rect class="bandglow" x="0" y="0" width="460" height="44" fill="url(#bg2)" />
+          <rect class="band" x="0" y="0" width="460" height="2.5" />
+
+          {L1.map((n) => <path class="lnk on1" data-min="1" pathLength="1" d={`M230 76 C230 110 ${n.x} 110 ${n.x} 141`} />)}
+          {l12.map(([a, b]) => <path class="lnk" data-min="2" pathLength="1" d={`M${L1[a].x} 179 C${L1[a].x} 215 ${L2[b].x} 215 ${L2[b].x} 258`} />)}
+          {L2.map((n, k) => <path id={`l2r-${k}`} class="lnk" data-min="3" pathLength="1" d={`M${n.x} 292 C${n.x} 340 230 350 230 397`} />)}
+          {pills.map((p) => <path class="lnk" data-min="4" pathLength="1" d={`M230 443 C230 466 ${p.x} 466 ${p.x} 490`} />)}
+
+          <g class="nd dim" data-min="1" data-cur="1"><rect x="155" y="36" width="150" height="40" rx="10" /><text x="230" y="56">ORGANISATION</text></g>
+          {L1.map((n) => <g class="nd dim" data-min="1" data-cur="1"><rect x={n.x - 55} y="141" width="110" height="38" rx="10" /><text x={n.x} y="160">{n.t}</text></g>)}
+          {L2.map((n) => <g class="nd dim" data-min="2" data-cur="2"><rect x={n.x - 41} y="258" width="82" height="34" rx="9" /><text x={n.x} y="275">{n.t}</text></g>)}
+
+          <g class="nd rootn" data-min="3" data-cur="3">
+            <rect class="halo" x="145" y="397" width="170" height="46" rx="12" />
+            <rect class="rb" x="145" y="397" width="170" height="46" rx="12" />
+            <text class="t1" x="230" y="420">ROOT CAUSE</text>
+            <text class="t2" x="230" y="420">ROOT CAUSE · FIXED ✓</text>
+          </g>
+
+          {pills.map((p) => (
+            <g class="nd pillg" data-min="4" data-cur="4"><rect x={p.x - 50} y="490" width="100" height="28" rx="8" /><text x={p.x} y="504">{p.t}</text><path class="ck" d={`M${p.x + 34} 504l3 3 6-6`} /></g>
+          ))}
+
+          <g class="flowp" data-min="3">
+            {L2.map((_, k) => <circle r="3" cx="0" cy="0"><animateMotion dur="2.6s" begin={`${k * 0.5}s`} repeatCount="indefinite"><mpath href={`#l2r-${k}`} /></animateMotion></circle>)}
+          </g>
+
+          <g class="nd seal" data-min="5">
+            <circle cx="404" cy="44" r="27" /><path d="M404 30l12 4.500v8c0 6.500-5 11-12 13-7-2-12-6.500-12-13v-8z" /><path class="sc" d="M398 44l4 4 8-8" />
+          </g>
+
+          <g class="lens"><circle r="30" /><circle class="lin" r="22" /><path d="M21 21l17 17" /></g>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const tsteps = [...document.querySelectorAll<HTMLElement>('.tstep')];
+    const viz = document.getElementById('viz') as unknown as SVGElement | null;
+    const tl = document.getElementById('tl');
+    const parts = viz ? [...viz.querySelectorAll<SVGElement>('[data-min]')] : [];
+    const band = [56, 160, 275, 420, 504];
+    const lens = [[300, 108], [230, 275], [230, 420], [230, 504], [440, 120]];
+    const setStep = (i: number) => {
+      const s = i + 1;
+      tsteps.forEach((el, k) => el.classList.toggle('on', k === i));
+      tl?.style.setProperty('--prog', String(s / tsteps.length));
+      if (!viz) return;
+      viz.setAttribute('data-s', String(s));
+      parts.forEach((el) => {
+        el.classList.toggle('on', Number(el.getAttribute('data-min')) <= s);
+        if (el.hasAttribute('data-cur')) el.classList.toggle('cur', Number(el.getAttribute('data-cur')) === s);
+      });
+      viz.style.setProperty('--by', band[i] + 'px');
+      viz.style.setProperty('--lx', lens[i][0] + 'px');
+      viz.style.setProperty('--ly', lens[i][1] + 'px');
+    };
+    if ('IntersectionObserver' in window) {
+      const io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) setStep(Number((e.target as HTMLElement).dataset.i)); }), { rootMargin: '-42% 0px -48% 0px' });
+      tsteps.forEach((s) => io.observe(s));
+    }
+    setStep(0);
+  </script>
+</section>
