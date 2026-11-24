@@ -1,21 +1,70 @@
 ---
 import '../styles/global.css';
-const { title = 'Zerix Securities — Think Cyber, Think Zerix', description = 'Zerix Securities helps regulated and critical organisations find security gaps, fix them and prove compliance.' } = Astro.props;
+import { company, linkedin } from '../data/site';
+const {
+  title = 'Zerix Securities | Cybersecurity Audit, VAPT, Compliance & Assurance in India',
+  description = 'Zerix Securities is a Mumbai cybersecurity and GRC firm. We find security gaps, fix them and prove compliance: cybersecurity audits, VAPT, certifications, data protection, OT security and regulatory audits.',
+  path = Astro.url.pathname,
+} = Astro.props;
+const site = (Astro.site ?? new URL('https://zerixsecurities.com')).toString().replace(/\/$/, '');
+const url = site + path;
+const ogImage = site + '/og-image.png';
+const ld = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization', '@id': site + '/#org', name: company.name, url: site + '/',
+      logo: site + '/logo.png', image: ogImage, slogan: 'Think Cyber, Think Zerix',
+      email: company.email, telephone: company.phone, sameAs: [linkedin.companyUrl],
+    },
+    {
+      '@type': 'ProfessionalService', '@id': site + '/#service', name: company.name, url: site + '/',
+      image: ogImage, description, email: company.email, telephone: company.phone, parentOrganization: { '@id': site + '/#org' },
+      address: { '@type': 'PostalAddress', streetAddress: 'Shri Vallabh, Shop 25, Borivali West', addressLocality: 'Mumbai', addressRegion: 'Maharashtra', addressCountry: 'IN' },
+      areaServed: 'Worldwide',
+      knowsAbout: ['Cybersecurity audit', 'Vulnerability Assessment and Penetration Testing', 'Security certifications', 'Data protection', 'OT security', 'Regulatory audits', 'Managed security services', 'Cybersecurity training'],
+    },
+    { '@type': 'WebSite', '@id': site + '/#web', url: site + '/', name: company.name, publisher: { '@id': site + '/#org' }, inLanguage: 'en' },
+  ],
+};
 ---
 <!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={url} />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
     <meta name="theme-color" content="#fbf9fe" />
+    <meta name="author" content={company.name} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={company.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={url} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Zerix Securities: Find the gaps. Fix them. Prove it." />
+    <meta property="og:locale" content="en_IN" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="icon" type="image/png" href="/logo.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <script type="application/ld+json" set:html={JSON.stringify(ld)} />
   </head>
   <body>
+    <a class="skip" href="#main">Skip to content</a>
     <slot />
     <script>
       const els = document.querySelectorAll('.reveal');
@@ -29,6 +78,11 @@ const { title = 'Zerix Securities — Think Cyber, Think Zerix', description = '
       const onScroll = () => header?.classList.toggle('scrolled', window.scrollY > 8);
       window.addEventListener('scroll', onScroll, { passive: true });
       onScroll();
+      const btn = document.querySelector('.menu-btn');
+      const setMenu = (o) => { header?.classList.toggle('menu-open', o); btn?.setAttribute('aria-expanded', String(o)); btn?.setAttribute('aria-label', o ? 'Close menu' : 'Open menu'); };
+      btn?.addEventListener('click', () => setMenu(!header?.classList.contains('menu-open')));
+      document.querySelectorAll('.mobile-nav a').forEach((a) => a.addEventListener('click', () => setMenu(false)));
+      document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setMenu(false); });
     </script>
   </body>
 </html>

@@ -9,25 +9,27 @@
     const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     let w = 0, h = 0, pts: { x: number; y: number; vx: number; vy: number; r: number }[] = [];
     const mouse = { x: -999, y: -999 };
-    let raf = 0, running = false;
+    let raf = 0, running = false, k = 1;
+    const small = matchMedia('(max-width: 760px)').matches;
 
     const resize = () => {
       const r = host.getBoundingClientRect();
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const dpr = Math.min(window.devicePixelRatio || 1, small ? 1.5 : 2);
+      k = (parseFloat(getComputedStyle(document.documentElement).fontSize) || 16) / 16;
       w = r.width; h = r.height;
       c.width = w * dpr; c.height = h * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      const n = Math.round(Math.min(95, Math.max(32, (w * h) / 15000)));
+      const n = Math.round(Math.min(small ? 38 : 95, Math.max(small ? 22 : 32, (w * h) / (15000 * k * k))));
       pts = Array.from({ length: n }, () => ({
         x: Math.random() * w, y: Math.random() * h,
         vx: (Math.random() - 0.5) * 0.3, vy: (Math.random() - 0.5) * 0.3,
-        r: Math.random() * 1.4 + 0.8,
+        r: (Math.random() * 1.4 + 0.8) * k,
       }));
       draw();
     };
 
-    const LINK = 150;
     const draw = () => {
+      const LINK = 150 * k, ML = 190 * k;
       ctx.clearRect(0, 0, w, h);
       for (let i = 0; i < pts.length; i++) {
         const p = pts[i];
@@ -40,13 +42,13 @@
           const q = pts[j], dx = p.x - q.x, dy = p.y - q.y, d = Math.hypot(dx, dy);
           if (d < LINK) {
             ctx.strokeStyle = `rgba(122,63,176,${(1 - d / LINK) * 0.2})`;
-            ctx.lineWidth = 1;
+            ctx.lineWidth = Math.max(1, k * 0.9);
             ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y); ctx.stroke();
           }
         }
         const md = Math.hypot(p.x - mouse.x, p.y - mouse.y);
-        if (md < 190) {
-          ctx.strokeStyle = `rgba(180,111,216,${(1 - md / 190) * 0.45})`;
+        if (md < ML) {
+          ctx.strokeStyle = `rgba(180,111,216,${(1 - md / ML) * 0.45})`;
           ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
         }
         ctx.fillStyle = 'rgba(122,63,176,0.55)';

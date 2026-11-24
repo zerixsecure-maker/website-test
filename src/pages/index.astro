@@ -1,7 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
 import NetworkBg from '../components/NetworkBg.astro';
-import Brand from '../components/Brand.astro';
 import LinkedIn from '../components/LinkedIn.astro';
 import Clients from '../components/Clients.astro';
 import Approach from '../components/Approach.astro';
@@ -30,10 +29,10 @@ const services = [
   <header class="site-header">
     <div class="wrap nav">
       <a href="/" class="brand" aria-label="Zerix Securities home">
-        <img src="/logo.png" alt="" />
+        <img src="/logo.png" alt="" width="596" height="419" decoding="async" />
         <span class="word"><b>ZERIX</b><small>Securities</small></span>
       </a>
-      <ul>
+      <ul class="desk-nav">
         <li><a href="#linkedin">Latest</a></li>
         <li><a href="#clients">Clients</a></li>
         <li><a href="#approach">Approach</a></li>
@@ -42,12 +41,19 @@ const services = [
         <li><a href="#presence">Contact</a></li>
       </ul>
       <a href="#presence" class="btn btn-primary">Contact us <span class="arr">→</span></a>
+      <button class="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="mnav"><i></i><i></i><i></i></button>
     </div>
+    <nav class="mobile-nav" id="mnav" aria-label="Mobile">
+      <ul>
+        <li><a href="#linkedin">Latest</a></li><li><a href="#clients">Clients</a></li><li><a href="#approach">Approach</a></li><li><a href="#sectors">Sectors</a></li><li><a href="#services">Services</a></li><li><a href="#presence">Contact</a></li>
+        <li><a href="#presence" class="btn btn-primary">Contact us <span class="arr">→</span></a></li>
+      </ul>
+    </nav>
   </header>
 
-  <main>
+  <main id="main">
     <!-- HERO -->
-    <section class="hero" style="padding-top:40px">
+    <section class="hero" style="padding-top:2.5rem">
       <div class="blob b1"></div>
       <div class="blob b2"></div>
       <NetworkBg />
@@ -56,7 +62,7 @@ const services = [
         <div>
           <div class="slides" aria-live="polite">
             <div class="slide active">
-              <h1 class="h"><span class="ln">Find the gaps.</span><span class="ln">Fix them.</span><span class="ln grad">Prove it.</span></h1>
+              <h1 class="h"><span class="ln">Find the gaps.</span><span class="ln">Fix them.</span><span class="ln grad">Prove it.</span><span class="sr-only"> Cybersecurity audit, assurance and compliance by Zerix Securities.</span></h1>
               <p class="lead">Zerix Securities helps organisations stay secure and audit-ready — from first assessment to regulator-ready evidence.</p>
             </div>
             <div class="slide">
@@ -102,7 +108,7 @@ const services = [
           </svg>
           <div class="sweep"></div>
           <i class="corner tl"></i><i class="corner tr"></i><i class="corner bl"></i><i class="corner br"></i>
-          <div class="core"><img src="/logo.png" alt="" /></div>
+          <div class="core"><img src="/logo.png" alt="" width="596" height="419" decoding="async" /></div>
           <span class="lab t">ASSESS</span>
           <span class="lab r">COMPLY</span>
           <span class="lab b">DEFEND</span>
@@ -110,8 +116,6 @@ const services = [
         </div>
       </div>
     </section>
-
-    <Brand />
 
     <LinkedIn />
 

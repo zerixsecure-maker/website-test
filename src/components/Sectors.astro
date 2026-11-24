@@ -30,7 +30,7 @@ const sectors = [
       <div class="orbit" id="orbit" style="--ba:0deg" role="tablist" aria-label="Sectors">
         <i class="o-ring r1"></i><i class="o-ring r2"></i><i class="o-ring r3"></i>
         <div class="o-beam"></div>
-        <div class="o-hub"><img src="/logo.png" alt="" /></div>
+        <div class="o-hub"><img src="/logo.png" alt="" width="596" height="419" decoding="async" /></div>
         {sectors.map((s, i) => (
           <button type="button" role="tab" class={`onode anim${i === 0 ? ' on' : ''}`} data-i={i} style={`--a:${i * 45}deg`} aria-label={s.n}>
             <svg viewBox="0 0 24 24" aria-hidden="true" set:html={s.i}></svg>
