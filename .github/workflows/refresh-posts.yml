@@ -1,0 +1,13 @@
+# Rebuilds the site every day so new LinkedIn posts from the Drive folder go live.
+# Needs a repository secret VERCEL_DEPLOY_HOOK (Vercel > Settings > Git > Deploy Hooks).
+name: Refresh LinkedIn posts
+on:
+  schedule:
+    - cron: '30 2 * * *'   # 08:00 IST daily
+  workflow_dispatch:
+jobs:
+  redeploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Vercel rebuild
+        run: curl -fsS -X POST "${{ secrets.VERCEL_DEPLOY_HOOK }}"

@@ -1,5 +1,16 @@
 ---
 import { linkedin } from '../data/site';
+import posts from '../data/posts.json';
+
+// Split post text into paragraphs, and each paragraph into plain / #hashtag parts.
+const feed = (posts as { id: string; date: string; text: string; link?: string }[]).slice(0, 5).map((p) => ({
+  id: p.id,
+  date: p.date,
+  link: p.link || (linkedin.companyUrl ? linkedin.companyUrl.replace(/\/$/, '') + '/posts/' : '#'),
+  paras: p.text.split(/\n{2,}/).map((para) =>
+    para.split(/(#[\p{L}\p{N}_]+)/u).filter(Boolean).map((s) => ({ tag: s.startsWith('#'), s })),
+  ),
+}));
 ---
 <section id="linkedin" class="flow-bg li-sec">
   <div class="wrap li">
@@ -14,14 +25,38 @@ import { linkedin } from '../data/site';
       <div class="phone">
         <span class="notch"></span>
         <div class="screen">
-          {linkedin.embedUrl ? (
-            <iframe src={linkedin.embedUrl} title="Latest post from Zerix Securities on LinkedIn" loading="lazy" allowfullscreen></iframe>
+          {feed.length ? (
+            <div class="lifeed" id="lifeed" aria-label="Latest LinkedIn posts from Zerix Securities">
+              {feed.map((p, i) => (
+                <article class={'lipost' + (i === 0 ? ' on' : '')} data-date={p.date}>
+                  <div class="lp-head">
+                    <img src="/logo.png" alt="" width="596" height="419" decoding="async" />
+                    <div><b>Zerix Securities</b><span><time class="lp-when" datetime={p.date}></time> · 🌐</span></div>
+                    <i class="lp-in" aria-hidden="true">in</i>
+                  </div>
+                  <div class="lp-body">
+                    {p.paras.map((para) => (
+                      <p>{para.map((part) => (part.tag ? <span class="lp-tag">{part.s}</span> : part.s))}</p>
+                    ))}
+                  </div>
+                  <div class="lp-foot">
+                    <div class="lp-acts" aria-hidden="true"><span>👍 Like</span><span>💬 Comment</span><span>🔁 Repost</span></div>
+                    <a href={p.link} target="_blank" rel="noopener">View on LinkedIn →</a>
+                  </div>
+                </article>
+              ))}
+              {feed.length > 1 && (
+                <div class="lp-dots" role="tablist" aria-label="Choose post">
+                  {feed.map((_, i) => <button type="button" role="tab" aria-label={`Post ${i + 1}`} class={i === 0 ? 'on' : ''} data-i={i}></button>)}
+                </div>
+              )}
+            </div>
           ) : (
             <div class="ph">
               <div class="ph-head"><img src="/logo.png" alt="" width="596" height="419" decoding="async" /><div><b>Zerix Securities</b><span class="sk w40"></span></div></div>
               <span class="sk w100"></span><span class="sk w90"></span><span class="sk w70"></span>
               <div class="ph-img"></div>
-              <small>Your latest LinkedIn post appears here</small>
+              <small>Our latest LinkedIn post appears here</small>
             </div>
           )}
         </div>
@@ -29,3 +64,31 @@ import { linkedin } from '../data/site';
     </div>
   </div>
 </section>
+<script>
+  const feed = document.getElementById('lifeed');
+  if (feed) {
+    const posts = [...feed.querySelectorAll<HTMLElement>('.lipost')];
+    const dots = [...feed.querySelectorAll<HTMLButtonElement>('.lp-dots button')];
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // "3h", "2d", "3w" like LinkedIn
+    const ago = (iso: string) => {
+      const m = Math.max(1, Math.round((Date.now() - new Date(iso).getTime()) / 60000));
+      if (m < 60) return m + 'm'; const h = Math.round(m / 60); if (h < 24) return h + 'h';
+      const d = Math.round(h / 24); if (d < 7) return d + 'd'; const w = Math.round(d / 7); if (w < 5) return w + 'w';
+      const mo = Math.round(d / 30); return mo < 12 ? mo + 'mo' : Math.round(d / 365) + 'y';
+    };
+    posts.forEach((p) => { const t = p.querySelector('.lp-when'); if (t) t.textContent = ago(p.dataset.date || ''); });
+    let cur = 0, timer = 0, paused = false;
+    const show = (i: number) => {
+      cur = (i + posts.length) % posts.length;
+      posts.forEach((p, k) => { p.classList.toggle('on', k === cur); if (k === cur) p.querySelector('.lp-body')?.scrollTo(0, 0); });
+      dots.forEach((d, k) => d.classList.toggle('on', k === cur));
+    };
+    const arm = () => { clearTimeout(timer); if (!reduce && posts.length > 1 && !paused) timer = window.setTimeout(() => { show(cur + 1); arm(); }, 12000); };
+    dots.forEach((d) => d.addEventListener('click', () => { show(Number(d.dataset.i)); arm(); }));
+    feed.addEventListener('pointerenter', () => { paused = true; clearTimeout(timer); });
+    feed.addEventListener('pointerleave', () => { paused = false; arm(); });
+    feed.addEventListener('touchstart', () => { paused = true; clearTimeout(timer); }, { passive: true });
+    new IntersectionObserver(([e]) => { paused = !e.isIntersecting; if (paused) clearTimeout(timer); else arm(); }).observe(feed);
+  }
+</script>
