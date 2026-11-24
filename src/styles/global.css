@@ -539,3 +539,37 @@ footer { padding: 24px 0 44px; color: var(--muted); font-size: .88rem; }
 }
 @media (max-width: 1080px) and (min-width: 561px) { .nav ul { gap: 22px; } }
 @media (prefers-reduced-motion: reduce) { .brand .word b { animation: none; } }
+
+/* ---------- Brand band (company name, bold) ---------- */
+.brandband { position: relative; overflow: hidden; padding: 84px 0 92px; background: linear-gradient(180deg, var(--bg), #fff 45%, var(--bg)); border-block: 1px solid var(--line); }
+.bb-marq { position: absolute; inset: 0; display: flex; align-items: center; opacity: .35; pointer-events: none; }
+.bb-track { display: flex; width: max-content; animation: slide 90s linear infinite; }
+.bb-track span { display: inline-flex; align-items: center; font: 700 clamp(3.5rem, 9vw, 8rem) 'Space Grotesk', sans-serif; letter-spacing: -.03em; color: transparent; -webkit-text-stroke: 1px var(--p-200); white-space: nowrap; }
+.bb-track span i { width: 14px; height: 14px; margin: 0 .5em; background: var(--p-200); transform: rotate(45deg); }
+.bb { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1fr) 270px; gap: 48px; align-items: end; }
+.bb-name { font: 700 clamp(3.2rem, 9.4vw, 8.2rem) 'Space Grotesk', sans-serif; line-height: .88; letter-spacing: -.045em; text-transform: uppercase; color: var(--p-900); }
+.bb-name span { display: block; }
+.bb-name .out { color: transparent; -webkit-text-stroke: 2.5px var(--p-600); background: linear-gradient(100deg, var(--p-600), var(--p-300)); -webkit-background-clip: text; background-clip: text; background-size: 0 0; }
+.bb-side { max-width: 280px; padding-bottom: 14px; }
+.bb-side img { width: 64px; height: auto; margin-bottom: 14px; animation: float 6s ease-in-out infinite; }
+.bb-side p { font: 600 1.15rem 'Space Grotesk', sans-serif; color: var(--p-900); line-height: 1.3; }
+.bb-side small { display: block; margin-top: 12px; font: 500 .7rem var(--mono); letter-spacing: .18em; text-transform: uppercase; color: var(--p-600); }
+
+/* ---------- Training panel (mirrored managed-services style) ---------- */
+.managed.rev { grid-template-columns: .85fr 1.15fr; background: radial-gradient(circle at 12% 30%, rgba(180,111,216,.5), transparent 55%), linear-gradient(225deg, var(--p-900), var(--p-800)); }
+.managed.rev .m-viz { margin: 0 auto 0 0; max-width: 340px; }
+.managed + .managed { margin-top: 28px; }
+.t-card { position: relative; width: 100%; padding: 74px 26px 26px; border-radius: 20px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.2); backdrop-filter: blur(6px); display: flex; flex-direction: column; gap: 18px; }
+.t-cap { position: absolute; left: 50%; top: -34px; width: 78px; height: 78px; margin-left: -39px; border-radius: 50%; background: #fff; display: grid; place-items: center; box-shadow: 0 16px 30px rgba(0,0,0,.25); animation: float 5s ease-in-out infinite; }
+.t-cap svg { width: 40px; height: 40px; fill: none; stroke: var(--p-600); stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+.t-row span { display: block; margin-bottom: 7px; font: 500 .72rem var(--mono); letter-spacing: .12em; text-transform: uppercase; color: #e7d8f6; }
+.t-row i { display: block; height: 7px; border-radius: 4px; background: rgba(255,255,255,.16); position: relative; overflow: hidden; }
+.t-row i::after { content: ''; position: absolute; inset: 0; width: var(--w); border-radius: 4px; background: linear-gradient(90deg, #fff, var(--p-300)); transform-origin: left; animation: tfill 4.5s ease-in-out infinite; animation-delay: var(--d, 0s); }
+@keyframes tfill { 0% { transform: scaleX(0); } 45%, 85% { transform: scaleX(1); } 100% { transform: scaleX(1); opacity: 0; } }
+
+@media (max-width: 980px) {
+  .bb { grid-template-columns: 1fr; align-items: start; }
+  .managed.rev { grid-template-columns: 1fr; }
+  .managed.rev .m-viz { margin: 36px auto 0; order: -1; }
+}
+@media (prefers-reduced-motion: reduce) { .bb-track, .t-row i::after { animation: none; } .t-row i::after { transform: none; } }

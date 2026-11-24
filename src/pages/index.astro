@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import NetworkBg from '../components/NetworkBg.astro';
+import Brand from '../components/Brand.astro';
 import LinkedIn from '../components/LinkedIn.astro';
 import Clients from '../components/Clients.astro';
 import Approach from '../components/Approach.astro';
@@ -10,24 +11,18 @@ import Presence from '../components/Presence.astro';
 import { company } from '../data/site';
 
 const services = [
-  { t: 'Cybersecurity Consulting & Implementation', d: 'We advise, then we build: security programmes designed and implemented with your team.',
-    i: '<path d="M12 3l8 3v6c0 4.5-3.2 7.8-8 9-4.8-1.2-8-4.5-8-9V6z"/><path class="acc" d="M9 12l2 2 4-4"/>' },
   { t: 'Audit & Assurance', d: 'Independent assessments of your security posture, with evidence you can stand behind.',
-    i: '<path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5"/><path class="acc" d="M9 13h7M9 17h5"/>' },
-  { t: 'Regulatory Cybersecurity Audits', d: 'Audits mapped to cybersecurity mandates such as CSCRF, so you are ready when regulators ask.',
-    i: '<path d="M4 20h16M6 20V10M10 20V10M14 20V10M18 20V10"/><path class="acc" d="M3 10l9-6 9 6z"/>' },
-  { t: 'Security Testing', d: 'Application, network and cloud testing that shows how your defences behave under pressure.',
-    i: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 10l3 2.5L7 15"/><path class="acc" d="M13 16h4"/>' },
+    i: '<path d="M12 3l8 3v6c0 4.5-3.2 7.8-8 9-4.8-1.2-8-4.5-8-9V6z"/><path class="acc" d="M9 12l2 2 4-4"/>' },
+  { t: 'Security Certifications', d: 'Readiness and support for recognised security certifications and attestations.',
+    i: '<circle cx="12" cy="9" r="6"/><path class="acc" d="M9 14.5L8 21l4-2 4 2-1-6.5"/>' },
   { t: 'VAPT', d: 'Vulnerability assessment and penetration testing that finds what attackers would find first.',
     i: '<circle cx="12" cy="12" r="8"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/><circle class="acc" cx="12" cy="12" r="3"/>' },
-  { t: 'Cybersecurity Certifications', d: 'Readiness and support for recognised security certifications and attestations.',
-    i: '<circle cx="12" cy="9" r="6"/><path class="acc" d="M9 14.5L8 21l4-2 4 2-1-6.5"/>' },
-  { t: 'Digital Forensics', d: 'Evidence-grade investigation, malware analysis and corporate and private investigations.',
-    i: '<circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/><path class="acc" d="M7.5 10.5a3 3 0 0 1 6 0"/>' },
-  { t: 'Infrastructure & OT Security', d: 'Hardening and review of IT networks, cloud and the industrial systems that run operations.',
+  { t: 'Data Protection', d: "Privacy and data protection programmes: how personal data is collected, used and safeguarded, aligned to laws such as India's DPDP Act.",
+    i: '<ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/><path class="acc" d="M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/>' },
+  { t: 'OT Security', d: 'Protection for industrial and operational technology where downtime is not an option.',
     i: '<path d="M3 21V10l6 4v-4l6 4V6h6v15z"/><path class="acc" d="M7 18h2M12 18h2M17 18h2"/>' },
-  { t: 'Cybersecurity Training', d: 'Hands-on programmes that build security skills across your teams.',
-    i: '<path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11.5V16c0 1.5 2.7 3 6 3s6-1.5 6-3v-4.5"/><path class="acc" d="M22 9v6"/>' },
+  { t: 'Regulatory Audits', d: 'Cybersecurity audits mapped to mandates such as CSCRF, so you are ready when regulators ask.',
+    i: '<path d="M4 20h16M6 20V10M10 20V10M14 20V10M18 20V10"/><path class="acc" d="M3 10l9-6 9 6z"/>' },
 ];
 
 ---
@@ -116,6 +111,8 @@ const services = [
       </div>
     </section>
 
+    <Brand />
+
     <LinkedIn />
 
     <Clients />
@@ -129,7 +126,7 @@ const services = [
       <div class="wrap">
         <div class="section-head reveal">
           <div class="kicker">Services</div>
-          <h2>Everything from audit to investigation, under one roof.</h2>
+          <h2>Security, assurance and skills — under one roof.</h2>
           <p>A glimpse of what we deliver. Tell us your situation and we'll point you to the right fit.</p>
         </div>
 
@@ -163,6 +160,28 @@ const services = [
               <circle class="blip b3" cx="200" cy="216" r="5" /><circle class="blip b4" cx="128" cy="236" r="4" />
             </svg>
             <div class="rsweep"></div>
+          </div>
+        </div>
+
+
+        <!-- TRAINING -->
+        <div class="managed rev reveal">
+          <div class="m-viz t-viz" aria-hidden="true">
+            <div class="t-card">
+              <div class="t-cap"><svg viewBox="0 0 24 24"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11.5V16c0 1.5 2.7 3 6 3s6-1.5 6-3v-4.5"/><path d="M22 9v6"/></svg></div>
+              <div class="t-row"><span>Awareness</span><i style="--w:92%"></i></div>
+              <div class="t-row"><span>Hands-on labs</span><i style="--w:74%;--d:.4s"></i></div>
+              <div class="t-row"><span>Incident response</span><i style="--w:81%;--d:.8s"></i></div>
+              <div class="t-row"><span>Leadership briefings</span><i style="--w:66%;--d:1.2s"></i></div>
+            </div>
+          </div>
+          <div class="m-copy">
+            <div class="kicker light">Training</div>
+            <h3>Build the skills that keep your organisation secure.</h3>
+            <p>Corporate and cybersecurity training for every level, from everyday staff to technical teams and leadership.</p>
+            <ul class="chips">
+              <li>Corporate training</li><li>Cybersecurity training</li><li>Workshops</li><li>Awareness programmes</li><li>Hands-on labs</li>
+            </ul>
           </div>
         </div>
 
