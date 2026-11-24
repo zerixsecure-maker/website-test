@@ -20,3 +20,8 @@ export const offices = [
   { name: 'Kolkata', tag: 'Office', lon: 88.36, lat: 22.57 },
   { name: 'New York', tag: 'Presence', lon: -74.0, lat: 40.71 },
 ];
+
+export const instagram = {
+  // Paste the Instagram profile link here, e.g. 'https://www.instagram.com/yourhandle/'
+  profileUrl: '',
+};
