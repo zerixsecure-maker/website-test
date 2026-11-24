@@ -3,9 +3,10 @@ import { linkedin } from '../data/site';
 import posts from '../data/posts.json';
 
 // Split post text into paragraphs, and each paragraph into plain / #hashtag parts.
-const feed = (posts as { id: string; date: string; text: string; link?: string }[]).slice(0, 5).map((p) => ({
+const feed = (posts as { id: string; date: string; text: string; link?: string; image?: string }[]).slice(0, 5).map((p) => ({
   id: p.id,
   date: p.date,
+  image: p.image || '',
   link: p.link || (linkedin.companyUrl ? linkedin.companyUrl.replace(/\/$/, '') + '/posts/' : '#'),
   paras: p.text.split(/\n{2,}/).map((para) =>
     para.split(/(#[\p{L}\p{N}_]+)/u).filter(Boolean).map((s) => ({ tag: s.startsWith('#'), s })),
@@ -28,7 +29,7 @@ const feed = (posts as { id: string; date: string; text: string; link?: string }
           {feed.length ? (
             <div class="lifeed" id="lifeed" aria-label="Latest LinkedIn posts from Zerix Securities">
               {feed.map((p, i) => (
-                <article class={'lipost' + (i === 0 ? ' on' : '')} data-date={p.date}>
+                <article class={'lipost' + (i === 0 ? ' on' : '') + (p.image ? ' has-img' : '')} data-date={p.date}>
                   <div class="lp-head">
                     <img src="/logo.png" alt="" width="596" height="419" decoding="async" />
                     <div><b>Zerix Securities</b><span><time class="lp-when" datetime={p.date}></time> · 🌐</span></div>
@@ -39,6 +40,8 @@ const feed = (posts as { id: string; date: string; text: string; link?: string }
                       <p>{para.map((part) => (part.tag ? <span class="lp-tag">{part.s}</span> : part.s))}</p>
                     ))}
                   </div>
+                  {p.image && <button type="button" class="lp-more" aria-expanded="false">…more</button>}
+                  {p.image && <div class="lp-media"><img src={p.image} alt="Image from the Zerix Securities LinkedIn post" loading="lazy" decoding="async" /></div>}
                   <div class="lp-foot">
                     <div class="lp-acts" aria-hidden="true"><span>👍 Like</span><span>💬 Comment</span><span>🔁 Repost</span></div>
                     <a href={p.link} target="_blank" rel="noopener">View on LinkedIn →</a>
@@ -81,10 +84,16 @@ const feed = (posts as { id: string; date: string; text: string; link?: string }
     let cur = 0, timer = 0, paused = false;
     const show = (i: number) => {
       cur = (i + posts.length) % posts.length;
-      posts.forEach((p, k) => { p.classList.toggle('on', k === cur); if (k === cur) p.querySelector('.lp-body')?.scrollTo(0, 0); });
+      posts.forEach((p, k) => { p.classList.toggle('on', k === cur); if (k !== cur && p.classList.contains('expanded')) { p.classList.remove('expanded'); const mb = p.querySelector('.lp-more'); if (mb) { mb.textContent = '…more'; mb.setAttribute('aria-expanded', 'false'); } } });
       dots.forEach((d, k) => d.classList.toggle('on', k === cur));
     };
     const arm = () => { clearTimeout(timer); if (!reduce && posts.length > 1 && !paused) timer = window.setTimeout(() => { show(cur + 1); arm(); }, 12000); };
+    feed.querySelectorAll<HTMLButtonElement>('.lp-more').forEach((b) => b.addEventListener('click', () => {
+      const post = b.closest('.lipost') as HTMLElement;
+      const open = post.classList.toggle('expanded');
+      b.textContent = open ? 'Show less' : '…more'; b.setAttribute('aria-expanded', String(open));
+      post.querySelector('.lp-body')?.scrollTo(0, 0);
+    }));
     dots.forEach((d) => d.addEventListener('click', () => { show(Number(d.dataset.i)); arm(); }));
     feed.addEventListener('pointerenter', () => { paused = true; clearTimeout(timer); });
     feed.addEventListener('pointerleave', () => { paused = false; arm(); });
