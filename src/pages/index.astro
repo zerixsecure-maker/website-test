@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import NetworkBg from '../components/NetworkBg.astro';
+import { linkedin } from '../data/site';
 
 // NOTE: client "logos" are placeholder wordmarks. Replace with real logo files in /public/clients/.
 const clientsA = ['Jainam Electronics', 'Mahavir Tube', 'Yash Optics', 'Trover Solutions', 'IEMA Labs'];
@@ -8,34 +9,45 @@ const clientsB = ['Gili Tech', 'Vernife', 'Abilini', 'Facet Flare', 'Arch', 'O-L
 const mono = (n: string) => n.replace(/[^A-Za-z ]/g, '').split(' ').map((w) => w[0]).join('').slice(0, 2).toUpperCase();
 
 const services = [
-  { t: 'Cybersecurity Audits & Assurance', d: 'Independent assessments of your security posture, with evidence you can stand behind.',
+  { t: 'Cybersecurity Consulting & Implementation', d: 'We advise, then we build: security programmes designed and implemented with your team.',
     i: '<path d="M12 3l8 3v6c0 4.5-3.2 7.8-8 9-4.8-1.2-8-4.5-8-9V6z"/><path class="acc" d="M9 12l2 2 4-4"/>' },
-  { t: 'Regulatory Cybersecurity Audits', d: 'Audits mapped to cybersecurity mandates such as CSCRF, so you are ready when regulators ask.',
+  { t: 'Audit & Assurance', d: 'Independent assessments of your security posture, with evidence you can stand behind.',
     i: '<path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5"/><path class="acc" d="M9 13h7M9 17h5"/>' },
+  { t: 'Regulatory Cybersecurity Audits', d: 'Audits mapped to cybersecurity mandates such as CSCRF, so you are ready when regulators ask.',
+    i: '<path d="M4 20h16M6 20V10M10 20V10M14 20V10M18 20V10"/><path class="acc" d="M3 10l9-6 9 6z"/>' },
+  { t: 'Security Testing', d: 'Application, network and cloud testing that shows how your defences behave under pressure.',
+    i: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 10l3 2.5L7 15"/><path class="acc" d="M13 16h4"/>' },
   { t: 'VAPT', d: 'Vulnerability assessment and penetration testing that finds what attackers would find first.',
     i: '<circle cx="12" cy="12" r="8"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/><circle class="acc" cx="12" cy="12" r="3"/>' },
-  { t: 'Infrastructure Security', d: 'Hardening and review of networks, servers, cloud and endpoints.',
-    i: '<rect x="3" y="4" width="18" height="6" rx="1.5"/><rect x="3" y="14" width="18" height="6" rx="1.5"/><path class="acc" d="M7 7h.01M7 17h.01"/>' },
-  { t: 'OT Security', d: 'Protection for industrial and operational technology where downtime is not an option.',
-    i: '<path d="M3 21V10l6 4v-4l6 4V6h6v15z"/><path class="acc" d="M7 18h2M12 18h2M17 18h2"/>' },
-  { t: 'Digital Forensics', d: 'Evidence-grade investigation of incidents, from acquisition through to analysis and reporting.',
+  { t: 'Cybersecurity Certifications', d: 'Readiness and support for recognised security certifications and attestations.',
+    i: '<circle cx="12" cy="9" r="6"/><path class="acc" d="M9 14.5L8 21l4-2 4 2-1-6.5"/>' },
+  { t: 'Digital Forensics', d: 'Evidence-grade investigation, malware analysis and corporate and private investigations.',
     i: '<circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/><path class="acc" d="M7.5 10.5a3 3 0 0 1 6 0"/>' },
-  { t: 'Malware Analysis', d: 'Understand what a sample does, how it got in, and how to contain it.',
-    i: '<path d="M9 8a3 3 0 0 1 6 0v7a3 3 0 0 1-6 0z"/><path d="M12 8v10"/><path class="acc" d="M5 9l4 2M19 9l-4 2M5 15l4-2M19 15l-4-2"/>' },
-  { t: 'Corporate & Private Investigations', d: 'Discreet, forensically sound investigations for organisations and individuals.',
-    i: '<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle class="acc" cx="12" cy="12" r="3"/>' },
-  { t: 'Corporate Training', d: 'Hands-on programmes that build security skills across your teams.',
+  { t: 'Infrastructure & OT Security', d: 'Hardening and review of IT networks, cloud and the industrial systems that run operations.',
+    i: '<path d="M3 21V10l6 4v-4l6 4V6h6v15z"/><path class="acc" d="M7 18h2M12 18h2M17 18h2"/>' },
+  { t: 'Cybersecurity Training', d: 'Hands-on programmes that build security skills across your teams.',
     i: '<path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11.5V16c0 1.5 2.7 3 6 3s6-1.5 6-3v-4.5"/><path class="acc" d="M22 9v6"/>' },
 ];
 
-const steps = [
-  { t: 'Trace the root', d: 'We start where forensics starts: understanding how your environment really works and where risk truly originates.' },
-  { t: 'Collect the evidence', d: 'Logs, configurations, access and data flows are examined as evidence — not assumptions.' },
-  { t: 'Reconstruct and assess', d: 'We rebuild the full picture and rank every gap by real business impact.' },
-  { t: 'Remediate at the source', d: 'Root causes get fixed, not symptoms — with clear owners and timelines.' },
-  { t: 'Prove it', d: 'Evidence-backed reports that stand up to auditors, regulators and boards.' },
+const sectors = [
+  { n: 'Financial Services', i: '<rect class="bar" x="4" y="11" width="3.6" height="9" rx="1"/><rect class="bar b2" x="10.2" y="5" width="3.6" height="15" rx="1"/><rect class="bar b3" x="16.4" y="8" width="3.6" height="12" rx="1"/>' },
+  { n: 'Insurance', i: '<path d="M3 12a9 9 0 0 1 18 0z"/><path d="M12 12v6a2 2 0 0 1-4 0"/><path class="drop" d="M16 15v2M19 14v2M13 14v2"/>' },
+  { n: 'Manufacturing', i: '<g class="gear"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="6.5"/><path d="M12 2.5v3M12 18.5v3M2.5 12h3M18.5 12h3M5.3 5.3l2.1 2.1M16.6 16.6l2.1 2.1M18.7 5.3l-2.1 2.1M7.4 16.6l-2.1 2.1"/></g>' },
+  { n: 'Pharmaceutical', i: '<g class="pill"><rect x="2" y="8.5" width="20" height="7" rx="3.5"/><path d="M12 8.5v7"/></g>' },
+  { n: 'Data Centres', i: '<rect x="3" y="4" width="18" height="6" rx="1.5"/><rect x="3" y="14" width="18" height="6" rx="1.5"/><path d="M12 7h6M12 17h6"/><circle class="led" cx="7" cy="7" r="1"/><circle class="led l2" cx="7" cy="17" r="1"/>' },
+  { n: 'IT & Technology', i: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 10l3 2.5L7 15"/><path class="cur" d="M13 16h4"/>' },
+  { n: 'Chemical', i: '<path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.7 3h10.6a2 2 0 0 0 1.7-3l-5-9V3"/><circle class="bub" cx="11" cy="17" r="1"/><circle class="bub b2" cx="14" cy="16" r=".9"/>' },
+  { n: '…and many more', i: '<circle class="dt" cx="5" cy="12" r="1.7"/><circle class="dt d2" cx="12" cy="12" r="1.7"/><circle class="dt d3" cx="19" cy="12" r="1.7"/>' },
 ];
-const layers = ['ROOT', 'EVIDENCE', 'RECONSTRUCT', 'REMEDIATE', 'ASSURE'];
+
+const steps = [
+  { t: 'Understand the roots', d: 'We begin with your organisation itself: its business, people, data and the regulations it operates under.' },
+  { t: 'Map the root infrastructure', d: 'A forensic-style review of systems, networks, access and data flows — examined as evidence, not assumptions.' },
+  { t: 'Pinpoint root causes', d: 'We trace every weakness back to its source and rank it by real business impact.' },
+  { t: 'Consult and recommend', d: 'Clear, tailored recommendations from consultants who have seen how things fail.' },
+  { t: 'Implement and prove', d: 'We don\'t stop at advice. We help implement, then deliver evidence that stands up to auditors and regulators.' },
+];
+const layers = ['ROOTS', 'INFRA', 'ROOT CAUSE', 'CONSULT', 'IMPLEMENT'];
 ---
 <Base>
   <header class="site-header">
@@ -46,8 +58,9 @@ const layers = ['ROOT', 'EVIDENCE', 'RECONSTRUCT', 'REMEDIATE', 'ASSURE'];
       </a>
       <ul>
         <li><a href="#clients">Clients</a></li>
-        <li><a href="#services">Services</a></li>
         <li><a href="#approach">Approach</a></li>
+        <li><a href="#sectors">Sectors</a></li>
+        <li><a href="#services">Services</a></li>
       </ul>
       <a href="#contact" class="btn btn-primary">Contact us <span class="arr">→</span></a>
     </div>
@@ -140,6 +153,72 @@ const layers = ['ROOT', 'EVIDENCE', 'RECONSTRUCT', 'REMEDIATE', 'ASSURE'];
       </div>
     </section>
 
+    <!-- APPROACH -->
+    <section id="approach" class="flow-bg">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="kicker">Approach</div>
+          <h2>Forensic-driven, from the roots up.</h2>
+          <p>Forensics is our foundation. We don't guess where risk lives — we trace it to its source, then help you fix it. Think Cyber, Think Zerix.</p>
+          <ul class="pillars"><li>Consultation</li><li>Implementation</li><li>Training</li></ul>
+        </div>
+
+        <div class="approach">
+          <ol class="tl" id="tl">
+            <span class="fill"></span>
+            {steps.map((s, i) => (
+              <li class={`tstep${i === 0 ? ' on' : ''}`} data-i={i}>
+                <span class="no">{String(i + 1).padStart(2, '0')}</span>
+                <h3>{s.t}</h3>
+                <p>{s.d}</p>
+              </li>
+            ))}
+          </ol>
+
+          <div class="viz-col">
+            <svg class="viz" id="viz" viewBox="0 0 460 540" aria-hidden="true" style="--i:0;--p:.2">
+              <path class="root" pathLength="1" d="M230 20 C230 120 150 160 120 260 C90 360 140 430 110 520" />
+              <path class="root r2" pathLength="1" d="M230 20 C230 140 300 190 330 290 C355 380 310 450 340 520" />
+              <path class="root r3" pathLength="1" d="M230 20 C225 170 235 330 230 520" />
+              <line class="spine" x1="36" y1="30" x2="36" y2="500" />
+              {layers.map((l, i) => (
+                <g class={`layer${i === 0 ? ' on' : ''}`} data-i={i} transform={`translate(0 ${30 + i * 98})`}>
+                  <rect class="bx" x="70" y="0" width="320" height="74" rx="12" />
+                  <text x="94" y="30" class="lt">{String(i + 1).padStart(2, '0')} · {l}</text>
+                  <rect class="bar" x="94" y="44" width="150" height="5" rx="2.5" />
+                  <rect class="bar" x="94" y="55" width="96" height="5" rx="2.5" />
+                  <rect class="bar" x="258" y="44" width="96" height="5" rx="2.5" />
+                  <rect class="bar" x="204" y="55" width="150" height="5" rx="2.5" />
+                </g>
+              ))}
+              <g class="probe"><circle class="pr" cx="36" cy="67" r="16" /><circle cx="36" cy="67" r="7" /></g>
+              <g class="lens"><circle cx="372" cy="67" r="34" /><path d="M396 91l22 22" /></g>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTORS -->
+    <section id="sectors" class="sectors-sec">
+      <div class="sec-deco" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="wrap">
+        <div class="section-head reveal">
+          <div class="kicker">Sectors</div>
+          <h2>Sector-aware security for the industries that run the economy.</h2>
+          <p>Every industry has its own risks, regulators and realities. We bring that context to every engagement.</p>
+        </div>
+        <div class="sectors">
+          {sectors.map((s, i) => (
+            <article class="sec reveal" style={`--d:${(i % 4) * 0.07}s`}>
+              <div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true" set:html={s.i}></svg></div>
+              <h3>{s.n}</h3>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
     <!-- SERVICES -->
     <section id="services">
       <div class="wrap">
@@ -195,46 +274,31 @@ const layers = ['ROOT', 'EVIDENCE', 'RECONSTRUCT', 'REMEDIATE', 'ASSURE'];
       </div>
     </section>
 
-    <!-- APPROACH -->
-    <section id="approach" class="flow-bg">
-      <div class="wrap">
-        <div class="section-head reveal">
-          <div class="kicker">Approach</div>
-          <h2>Forensic-driven, from the roots up.</h2>
-          <p>Forensics is our foundation. We don't guess where risk lives — we trace it to its source. Think Cyber, Think Zerix.</p>
+    <!-- LINKEDIN -->
+    <section id="linkedin" class="flow-bg">
+      <div class="wrap li">
+        <div class="reveal">
+          <div class="kicker">Latest from Zerix</div>
+          <h2 style="font-size:clamp(2rem,3.6vw,2.9rem)">Follow our thinking, straight from the field.</h2>
+          <p class="li-p">Insights, advisories and updates from our team — as we publish them on LinkedIn.</p>
+          <a class="btn btn-primary" href={linkedin.companyUrl || '#'} target={linkedin.companyUrl ? '_blank' : undefined} rel="noopener">Follow us on LinkedIn <span class="arr">→</span></a>
         </div>
-
-        <div class="approach">
-          <ol class="tl" id="tl">
-            <span class="fill"></span>
-            {steps.map((s, i) => (
-              <li class={`tstep${i === 0 ? ' on' : ''}`} data-i={i}>
-                <span class="no">{String(i + 1).padStart(2, '0')}</span>
-                <h3>{s.t}</h3>
-                <p>{s.d}</p>
-              </li>
-            ))}
-          </ol>
-
-          <div class="viz-col">
-            <svg class="viz" id="viz" viewBox="0 0 460 540" aria-hidden="true" style="--i:0;--p:.2">
-              <path class="root" pathLength="1" d="M230 20 C230 120 150 160 120 260 C90 360 140 430 110 520" />
-              <path class="root r2" pathLength="1" d="M230 20 C230 140 300 190 330 290 C355 380 310 450 340 520" />
-              <path class="root r3" pathLength="1" d="M230 20 C225 170 235 330 230 520" />
-              <line class="spine" x1="36" y1="30" x2="36" y2="500" />
-              {layers.map((l, i) => (
-                <g class={`layer${i === 0 ? ' on' : ''}`} data-i={i} transform={`translate(0 ${30 + i * 98})`}>
-                  <rect class="bx" x="70" y="0" width="320" height="74" rx="12" />
-                  <text x="94" y="30" class="lt">{String(i + 1).padStart(2, '0')} · {l}</text>
-                  <rect class="bar" x="94" y="44" width="150" height="5" rx="2.5" />
-                  <rect class="bar" x="94" y="55" width="96" height="5" rx="2.5" />
-                  <rect class="bar" x="258" y="44" width="96" height="5" rx="2.5" />
-                  <rect class="bar" x="204" y="55" width="150" height="5" rx="2.5" />
-                </g>
-              ))}
-              <g class="probe"><circle class="pr" cx="36" cy="67" r="16" /><circle cx="36" cy="67" r="7" /></g>
-              <g class="lens"><circle cx="372" cy="67" r="34" /><path d="M396 91l22 22" /></g>
-            </svg>
+        <div class="phone-wrap reveal" style="--d:.1s">
+          <div class="p-rings" aria-hidden="true"><i></i><i></i><i></i></div>
+          <div class="phone">
+            <span class="notch"></span>
+            <div class="screen">
+              {linkedin.embedUrl ? (
+                <iframe src={linkedin.embedUrl} title="Latest post from Zerix Securities on LinkedIn" loading="lazy" allowfullscreen></iframe>
+              ) : (
+                <div class="ph">
+                  <div class="ph-head"><img src="/logo.png" alt="" /><div><b>Zerix Securities</b><span class="sk w40"></span></div></div>
+                  <span class="sk w100"></span><span class="sk w90"></span><span class="sk w70"></span>
+                  <div class="ph-img"></div>
+                  <small>Your latest LinkedIn post appears here</small>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
