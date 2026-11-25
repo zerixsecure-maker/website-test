@@ -13,7 +13,7 @@ import Testimonials from '../components/Testimonials.astro';
 import Presence from '../components/Presence.astro';
 import { company } from '../data/site';
 
-const svcHref: Record<string, string> = { 'Audit & Assurance': '/services/audit-assurance/', 'Security Certifications': '/services/security-certifications/', 'VAPT': '/services/vapt/', 'Data Protection': '/services/data-protection/', 'OT Security': '/services/ot-security/', 'Secure Networking': '/services/secure-networking/', 'Network Infrastructure Redesign': '/services/network-redesign/', 'Secure Coding': '/services/secure-coding/', 'Cloud Security': '/services/cloud-security/', 'Regulatory Audits': '/services/regulatory-audits/' };
+const svcHref: Record<string, string> = { 'Audit & Assurance': '/services/audit-assurance/', 'Security Certifications': '/services/security-certifications/', 'VAPT': '/services/vapt/', 'Data Protection': '/services/data-protection/', 'OT Security': '/services/ot-security/', 'Secure Networking': '/services/secure-networking/', 'Network Infrastructure Redesign': '/services/network-redesign/', 'Secure Coding': '/services/secure-coding/', 'Cloud Security': '/services/cloud-security/', 'Regulatory Audits': '/services/regulatory-audits/', 'vCISO & vDPO': '/services/virtual-advisory/', 'Accessibility Audit': '/services/accessibility-audit/', 'STQC Audit Preparation': '/services/stqc-audit-preparation/', 'Managed Security': '/services/managed-services/' };
 const services = [
   { t: 'Audit & Assurance', d: 'Independent assessments of your security posture, with evidence you can stand behind.',
     i: '<path d="M12 3l8 3v6c0 4.5-3.2 7.8-8 9-4.8-1.2-8-4.5-8-9V6z"/><path class="acc" d="M9 12l2 2 4-4"/>' },
@@ -33,6 +33,14 @@ const services = [
     i: '<path d="M8 7l-5 5 5 5M16 7l5 5-5 5"/><path class="acc" d="M14 4l-4 16"/>' },
   { t: 'Cloud Security', d: 'Posture, identity and data protection across AWS, Azure and GCP.',
     i: '<path d="M7 18a4 4 0 01-.5-7.9 5.5 5.5 0 0110.7-1.4A4.5 4.5 0 0117 18z"/><path class="acc" d="M12 11v4M10 13h4"/>' },
+  { t: 'vCISO & vDPO', d: 'Senior security and privacy leadership on call, without a full-time hire.',
+    i: '<circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-4 3-6.5 7-6.5s7 2.5 7 6.5z"/><path class="acc" d="M10 17l1.5 1.5L15 15"/>' },
+  { t: 'Accessibility Audit', d: 'Digital accessibility and GIGW audits so every user can use your services.',
+    i: '<circle cx="12" cy="12" r="9"/><circle class="acc" cx="12" cy="7" r="1.2"/><path d="M7 10h10M12 10v4M12 14l-2.5 4M12 14l2.5 4"/>' },
+  { t: 'STQC Audit Preparation', d: 'Pre-audit testing and documentation so certification goes first time.',
+    i: '<path d="M9.5 14h5c0-2-1-3-1-5.5a1.5 1.5 0 10-3 0c0 2.5-1 3.5-1 5.5z"/><rect x="6.5" y="14" width="11" height="3" rx="1"/><path class="acc" d="M5 20h14"/>' },
+  { t: 'Managed Security', d: 'Your security team on call: 24x7 SOC, EDR and XDR run for you.',
+    i: '<path d="M2 12c3-5 17-5 20 0-3 5-17 5-20 0z"/><circle class="acc" cx="12" cy="12" r="3"/>' },
   { t: 'Regulatory Audits', d: 'Cybersecurity audits mapped to mandates such as CSCRF, so you are ready when regulators ask.',
     i: '<path d="M4 20h16M6 20V10M10 20V10M14 20V10M18 20V10"/><path class="acc" d="M3 10l9-6 9 6z"/>' },
 ];
@@ -136,6 +144,7 @@ const services = [
               <span class="card-go" aria-hidden="true">Explore →</span>
             </a>
           ))}
+          <a class="card card-all" href="/services/"><span class="no">+</span><h3>Explore all services</h3><p>Every service and sub-service, with how we help.</p><span class="card-go" aria-hidden="true">View all →</span></a>
         </div>
         <p class="svc-all reveal"><a class="btn btn-ghost" href="/services/">Explore all services <span class="arr">→</span></a></p>
 

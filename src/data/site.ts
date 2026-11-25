@@ -29,11 +29,8 @@ export const instagram = {
 // Main navigation. An item with `children` becomes a dropdown (desktop) / grouped list (mobile).
 export const navLinks: { label: string; href?: string; children?: { label: string; href: string }[]; tree?: boolean }[] = [
   { label: 'Company', children: [
-    { label: 'Our approach', href: '/#approach' },
-    { label: 'Sectors we serve', href: '/#sectors' },
-    { label: 'Clients', href: '/#clients' },
-    { label: 'Latest from Zerix', href: '/#linkedin' },
-  ] },
+    { label: 'Overview', href: '/company/overview/' }, { label: 'Our team', href: '/company/team/' }, { label: 'Qualifications', href: '/company/qualifications/' },
+    { label: 'Our approach', href: '/#approach' }, { label: 'Sectors we serve', href: '/#sectors' }, { label: 'Clients', href: '/#clients' } ] },
   { label: 'Services', href: '/services/', tree: true },
   { label: 'Products', href: '/products/' },
   { label: 'Why Cyber', href: '/why-cyber/' },

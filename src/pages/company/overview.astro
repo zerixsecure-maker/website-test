@@ -1,0 +1,26 @@
+---
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import Viz from '../../components/Viz.astro';
+import { company } from '../../data/site';
+const values = [['Integrity', 'We tell you what we find, as it is.'], ['Rigour', 'Tested, evidenced and repeatable work.'], ['Clarity', 'Plain language over jargon.'], ['Partnership', 'We work beside your team, not above it.']];
+---
+<Base title="Company Overview | Zerix Securities" description="Zerix Securities is a Mumbai-based cybersecurity, GRC and compliance firm. Our mission, vision and values." path="/company/overview/">
+  <Header current="company" />
+  <main id="main" class="co">
+    <section class="co-h"><div class="wrap">
+      <div class="kicker">Company · Overview</div>
+      <h1>Think Cyber, <span>Think Zerix.</span></h1>
+      <p class="co-lead">We are a Mumbai-based cybersecurity, GRC and compliance firm. We help organisations find the gaps, fix them and prove it to customers and regulators.</p>
+    </div></section>
+    <section class="co-bento"><div class="wrap bento">
+      <article class="bn bn-m reveal"><div><div class="kicker">Our mission</div><h2>Make strong security and compliance practical for every organisation.</h2></div><Viz icon="shield" motif="radar" chips={['Assess', 'Fix', 'Prove']} accent="#7a3fb0" class="bn-viz" /></article>
+      <article class="bn bn-v reveal"><div class="kicker">Our vision</div><h2>A digitally trusted India, where every business can show it is secure.</h2><Viz icon="eye" motif="orbit" chips={['Trust']} accent="#2d86d6" class="bn-viz sm" /></article>
+      {values.map((v, i) => (<article class="bn bn-s reveal" style={`--d:${i * .08}s`}><b>{String(i + 1).padStart(2, '0')}</b><h3>{v[0]}</h3><p>{v[1]}</p></article>))}
+      <article class="bn bn-go reveal"><h3>What we do</h3><p>Audit, certification, testing, data protection, managed security and training.</p><div class="bn-links"><a href="/services/">Services →</a><a href="/products/">Products →</a><a href="/company/qualifications/">Qualifications →</a></div></article>
+    </div></section>
+    <div class="wrap"><div class="ctab"><div><h2>Want to know more about us?</h2><p>We are happy to walk you through how we work.</p></div><div class="sp-btns"><a class="btn btn-primary" href={`mailto:${company.email}`}>Talk to an expert <span class="arr">→</span></a><a class="btn btn-ghost" href="/company/team/">Meet the team</a></div></div></div>
+  </main>
+  <Footer />
+</Base>

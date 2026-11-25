@@ -2,7 +2,7 @@
 import Base from '../layouts/Base.astro';
 import Header from './Header.astro';
 import Footer from './Footer.astro';
-import Viz from './Viz.astro';
+import Laptop from './Laptop.astro';
 import Widget from './Widget.astro';
 import { allPages, type Svc } from '../data/services';
 import { company } from '../data/site';
@@ -11,81 +11,68 @@ const { svc } = Astro.props as { svc: Svc };
 const parent = svc.parent;
 const kids = svc.kids ?? [];
 const sibs = (parent?.kids ?? []).filter((s) => s.slug !== svc.slug);
+const rel = kids.length ? kids : sibs;
 const idx = allPages.findIndex((p) => p.slug === svc.slug);
-const flip = idx % 2 === 1;          // hero art left/right
-const widgetFirst = idx % 3 === 0;   // dashboard above or below "what we do"
+const v = (['a', 'b', 'c'] as const)[idx % 3];
 const crumbs = [{ n: 'Services', h: '/services/' }, ...(parent ? [{ n: parent.name, h: parent.href }] : []), { n: svc.name, h: svc.href }];
 const mail = `mailto:${company.email}?subject=${encodeURIComponent(svc.name + ' enquiry')}`;
+const What = () => null;
 ---
 <Base title={`${svc.name} | Zerix Securities`} description={`${svc.tag} ${svc.need}`} path={svc.href}>
   <Header current="services" />
-  <main id="main" class="svp" style={`--a:${svc.accent}`}>
-    <section class={`sp-hero${flip ? ' flip' : ''}`}>
-      <div class="wrap sp-hero-in">
-        <div class="sp-copy">
+  <main id="main" class={`svp v${v}`} style={`--a:${svc.accent}`}>
+    <section class="h">
+      <div class="wrap h-in">
+        <div class="h-copy">
           <nav class="crumbs" aria-label="Breadcrumb">{crumbs.map((c, i) => i < crumbs.length - 1 ? <><a href={c.h}>{c.n}</a><span>/</span></> : <span class="cur" aria-current="page">{c.n}</span>)}</nav>
           <h1>{svc.name}</h1>
-          <p class="sp-tag">{svc.tag}</p>
-          <div class="sp-btns"><a class="btn btn-primary" href={mail}>Talk to an expert <span class="arr">→</span></a><a class="btn btn-ghost" href="#how">How we help</a></div>
+          <p class="h-tag">{svc.tag}</p>
+          <ul class="h-chips">{svc.chips.map((c) => <li>{c}</li>)}</ul>
+          <div class="sp-btns"><a class="btn btn-primary" href={mail}>Talk to an expert <span class="arr">→</span></a><a class="btn btn-ghost" href="#detail">See how we help</a></div>
         </div>
-        <Viz icon={svc.icon} motif={svc.motif} chips={svc.chips} accent={svc.accent} />
+        <Laptop svc={svc} tilt={v} />
       </div>
     </section>
 
-    <section class="sp-need">
-      <div class="wrap need-in reveal">
-        <div class="kicker">The need of the hour</div>
-        <p class="need-t">{svc.need}</p>
+    <section class="band" id="detail">
+      <div class="wrap bgrid">
+        {v !== 'c' && (
+          <article class="pn pn-need"><div class="kicker">The need of the hour</div><p>{svc.need}</p></article>
+        )}
+        {v !== 'c' && (
+          <article class="pn pn-what"><div class="kicker">What we do</div>
+            <div class="wgrid">{svc.what.map((w, i) => (<div class="wc"><svg viewBox="0 0 100 100" aria-hidden="true" set:html={icons[svc.icon]}></svg><b>{w[0]}</b><small>{w[1]}</small></div>))}</div></article>
+        )}
+        {v === 'c' && (
+          <article class="pn pn-tabs">
+            <div class="tabsb" role="tablist"><button type="button" class="on" data-t="0">The need</button><button type="button" data-t="1">What we do</button><button type="button" data-t="2">How we help</button></div>
+            <div class="tp on" data-p="0"><p class="big">{svc.need}</p></div>
+            <div class="tp" data-p="1"><div class="wgrid">{svc.what.map((w) => (<div class="wc"><svg viewBox="0 0 100 100" aria-hidden="true" set:html={icons[svc.icon]}></svg><b>{w[0]}</b><small>{w[1]}</small></div>))}</div></div>
+            <div class="tp" data-p="2"><ol class="hs">{svc.how.map((h, i) => <li style={`--i:${i}`}><b>{i + 1}</b><span><strong>{h[0]}</strong><small>{h[1]}</small></span></li>)}</ol></div>
+          </article>
+        )}
+        <div class="pn-wd"><Widget w={svc.w} /></div>
+        {v !== 'c' && (
+          <article class="pn pn-how"><div class="kicker">How we help</div>
+            <ol class="hs">{svc.how.map((h, i) => <li style={`--i:${i}`}><b>{i + 1}</b><span><strong>{h[0]}</strong><small>{h[1]}</small></span></li>)}</ol></article>
+        )}
+        {rel.length > 0 && (
+          <nav class="pn pn-rel" aria-label="Related services"><span class="kicker">{kids.length ? `Within ${svc.name}` : `More in ${parent?.name}`}</span>
+            <div class="relrow">{rel.map((k) => <a href={k.href} style={`--a:${k.accent}`}><svg viewBox="0 0 100 100" aria-hidden="true" set:html={icons[k.icon]}></svg>{k.name}<em>→</em></a>)}</div></nav>
+        )}
       </div>
     </section>
 
-    {widgetFirst && <section class="sp-sec"><div class="wrap reveal"><Widget w={svc.w} /></div></section>}
-
-    <section class="sp-sec" id="what">
-      <div class="wrap">
-        <div class="sec-row reveal"><div><div class="kicker">What we do</div><h2>{svc.name}, in practice</h2></div>
-          <div class="rail-btns"><button type="button" class="rb" data-dir="-1" aria-label="Scroll left">←</button><button type="button" class="rb" data-dir="1" aria-label="Scroll right">→</button></div></div>
-        <div class="rail reveal" tabindex="0" aria-label={`What we do in ${svc.name}`}>
-          {svc.what.map((w, i) => (<article class="rcard"><span class="rno">{String(i + 1).padStart(2, '0')}</span><svg viewBox="0 0 100 100" aria-hidden="true" set:html={icons[svc.icon]}></svg><h3>{w[0]}</h3><p>{w[1]}</p></article>))}
-        </div>
-      </div>
-    </section>
-
-    {!widgetFirst && <section class="sp-sec"><div class="wrap reveal"><Widget w={svc.w} /></div></section>}
-
-    <section class="sp-sec" id="how">
-      <div class="wrap">
-        <div class="sec-row reveal"><div><div class="kicker">How we help</div><h2>Three steps, no surprises</h2></div></div>
-        <ol class="how reveal">
-          {svc.how.map((h, i) => (<li style={`--i:${i}`}><b>{i + 1}</b><h3>{h[0]}</h3><p>{h[1]}</p></li>))}
-        </ol>
-      </div>
-    </section>
-
-    {(kids.length > 0 || sibs.length > 0) && (
-      <section class="sp-sec">
-        <div class="wrap">
-          <div class="sec-row reveal"><div><div class="kicker">{kids.length ? `Within ${svc.name}` : `More in ${parent?.name}`}</div><h2>{kids.length ? 'Choose a service' : 'Related services'}</h2></div></div>
-          <div class="rel reveal">
-            {(kids.length ? kids : sibs).map((k) => (<a class="rel-c" href={k.href} style={`--a:${k.accent}`}><svg viewBox="0 0 100 100" aria-hidden="true" set:html={icons[k.icon]}></svg><span><b>{k.name}</b><small>{k.tag}</small></span><em>→</em></a>))}
-          </div>
-        </div>
-      </section>
-    )}
-
-    <section class="sp-cta">
-      <div class="wrap cta-in reveal">
-        <h2>Let us look at your {svc.name} needs.</h2>
-        <p>A short call is enough to scope it. No pressure, no jargon.</p>
-        <div class="sp-btns"><a class="btn btn-primary" href={mail}>Talk to an expert <span class="arr">→</span></a><a class="btn btn-ghost" href="/services/">All services</a></div>
-      </div>
-    </section>
+    <div class="wrap"><div class="ctab">
+      <div><h2>Let us look at your {svc.name} needs.</h2><p>A short call is enough to scope it. No pressure, no jargon.</p></div>
+      <div class="sp-btns"><a class="btn btn-primary" href={mail}>Talk to an expert <span class="arr">→</span></a><a class="btn btn-ghost" href="/services/">All services</a></div>
+    </div></div>
   </main>
   <Footer />
 </Base>
 <script>
-  document.querySelectorAll<HTMLElement>('.sec-row').forEach((row) => {
-    const rail = row.parentElement?.querySelector<HTMLElement>('.rail'); if (!rail) return;
-    row.querySelectorAll<HTMLElement>('.rb').forEach((b) => b.addEventListener('click', () => rail.scrollBy({ left: +(b.dataset.dir || 1) * rail.clientWidth * 0.7, behavior: 'smooth' })));
+  document.querySelectorAll<HTMLElement>('.pn-tabs').forEach((c) => {
+    const bs = [...c.querySelectorAll<HTMLElement>('.tabsb button')], ps = [...c.querySelectorAll<HTMLElement>('.tp')];
+    bs.forEach((b, i) => b.addEventListener('click', () => { bs.forEach((x, j) => x.classList.toggle('on', i === j)); ps.forEach((x, j) => x.classList.toggle('on', i === j)); }));
   });
 </script>

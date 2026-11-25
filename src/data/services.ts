@@ -13,7 +13,7 @@ export interface Svc {
   slug: string; name: string; tag: string; icon: string;
   motif: 'radar' | 'orbit' | 'flow' | 'grid' | 'rings' | 'wave' | 'cycle';
   accent: string; need: string; chips: string[]; what: Tup[]; how: Tup[]; w: Widget;
-  group?: string; kids?: Svc[]; href: string; parent?: Svc; short?: string;
+  group?: string; kids?: Svc[]; href: string; screen?: string; parent?: Svc; short?: string;
 }
 type In = Omit<Svc, 'href' | 'parent'>;
 
@@ -260,6 +260,56 @@ const raw: In[] = [
     [['Assess', 'Review accounts and workloads.'], ['Harden', 'Fix posture and access.'], ['Monitor', 'Catch drift early.']],
     { k: 'bars', t: 'Posture by area', d: [['Identity', 62], ['Storage', 78], ['Network', 55], ['Logging', 70], ['Encryption', 84]] }, { accent: '#2d86d6' }),
 
+
+  { ...S('virtual-advisory', 'vCISO & vDPO', 'Senior security and privacy leadership, without the full-time hire.', 'vciso', 'orbit',
+    'Boards want a security and privacy leader, but a full-time CISO or DPO is out of reach for many firms. A virtual leader gives you the guidance, on your terms.',
+    ['Strategy', 'Board reporting', 'Risk', 'Privacy'],
+    [['Security strategy', 'A roadmap tied to business risk.'], ['Board & regulator liaison', 'Reporting in plain language.'], ['Programme oversight', 'Policies, audits and vendors steered.'], ['Incident leadership', 'A calm lead when things go wrong.']],
+    [['Assess', 'Baseline your risk and gaps.'], ['Plan', 'A roadmap the board can back.'], ['Lead', 'Run it with your team, monthly.']],
+    { k: 'flow', t: 'First 90 days', d: ['Baseline', 'Roadmap', 'Quick wins', 'Governance', 'Run'] }, { accent: '#4b2678' }),
+    kids: [
+      S('vciso', 'vCISO', 'A part-time CISO for your organisation.', 'vciso', 'cycle',
+        'Security leadership shapes every decision, from budgets to vendors. A vCISO brings it without a full-time hire.',
+        ['Roadmap', 'Risk register', 'Board', 'Vendors'],
+        [['Roadmap & budget', 'Priorities your board can fund.'], ['Risk register', 'Owned, rated and tracked.'], ['Vendor oversight', 'Third-party risk under control.'], ['Audit & regulator support', 'Someone senior in the room.']],
+        [['Baseline', 'Understand your risk today.'], ['Roadmap', 'Plan the next four quarters.'], ['Govern', 'Monthly reviews and reporting.']],
+        { k: 'donut', t: 'Where a vCISO spends time', d: [['Strategy', 30], ['Governance', 30], ['Oversight', 25], ['Response', 15]] }, { accent: '#4b2678' }),
+      S('vdpo', 'vDPO', 'A Data Protection Officer, on retainer.', 'consent', 'rings',
+        'Privacy laws such as the DPDP Act expect clear accountability for personal data. A vDPO gives you a named expert for it.',
+        ['DPIA', 'Requests', 'Breach', 'Vendors'],
+        [['Privacy programme', 'Policies, notices and records.'], ['DPIA & vendor reviews', 'Assess new projects and processors.'], ['Rights requests', 'Access and erasure handled on time.'], ['Breach advice', 'Assess and report incidents.']],
+        [['Assess', 'Map data and obligations.'], ['Set up', 'Policies, notices and process.'], ['Advise', 'Ongoing DPO support.']],
+        { k: 'flow', t: 'Rights request handling', d: ['Received', 'Verified', 'Fulfilled', 'Closed'] }, { accent: '#1f8fa8' }),
+    ] },
+
+  { ...S('accessibility-audit', 'Accessibility Audit', 'Websites and apps everyone can use.', 'access', 'rings',
+    'Accessibility is a legal expectation and good business: more people can use your service. Regulators are now asking for audits by certified accessibility professionals.',
+    ['WCAG', 'Screen readers', 'Mobile', 'Remediation'],
+    [['Tool + manual testing', 'Automated scans plus real assistive-tech checks.'], ['WCAG review', 'Against the success criteria.'], ['Fix guidance', 'Changes developers can act on.'], ['Retest', 'Confirm the fixes worked.']],
+    [['Audit', 'Test pages, flows and documents.'], ['Fix', 'Guide your team through remediation.'], ['Retest', 'Verify and report.']],
+    { k: 'bars', t: 'Issues by type', d: [['Contrast', 74], ['Alt text', 62], ['Keyboard', 55], ['Forms', 48], ['Headings', 36]] }, { accent: '#2a8f7a' }),
+    kids: [
+      S('digital-accessibility-audit', 'Digital Accessibility Audit', 'WCAG-based audit of websites, apps and documents.', 'access', 'grid',
+        'People using screen readers, keyboards or magnification need to complete the same tasks as everyone else. This audit shows where they cannot.',
+        ['WCAG 2.2', 'Screen reader', 'Keyboard', 'Contrast'],
+        [['Page & flow testing', 'Key journeys, end to end.'], ['Assistive-tech checks', 'Screen readers and keyboard only.'], ['Mobile apps', 'Android and iOS accessibility.'], ['Documents & PDFs', 'Forms and downloads too.']],
+        [['Scope', 'Pick pages, flows and apps.'], ['Test', 'Automated and manual.'], ['Report', 'Prioritised fixes, then retest.']],
+        { k: 'gauge', t: 'WCAG conformance', l: 'Conformant', v: 68 }, { accent: '#2a8f7a' }),
+      S('gigw-audit', 'GIGW Audit', 'Guidelines for Indian Government Websites.', 'checklist', 'flow',
+        'Government and public-sector websites are expected to follow GIGW for usability, accessibility and quality.',
+        ['GIGW 3.0', 'Content', 'Usability', 'Accessibility'],
+        [['Compliance review', 'Against GIGW parameters.'], ['Accessibility & usability', 'Includes WCAG checks.'], ['Content & governance', 'Policies, contact details, archiving.'], ['Audit report', 'Ready for the certification effort.']],
+        [['Review', 'Check against GIGW.'], ['Fix', 'Close gaps with your team.'], ['Report', 'Audit report and retest.']],
+        { k: 'heat', t: 'GIGW areas', rows: ['Content', 'Design', 'Development', 'Management'], cols: ['Met', 'Partly', 'Gap'] }, { accent: '#c57a1f' }),
+    ] },
+
+  S('stqc-audit-preparation', 'STQC Audit Preparation', 'Get ready before the certifying audit.', 'stamp', 'cycle',
+    'Government and public-sector systems are often tested and certified through STQC. Going in unprepared means failed audits, rework and delays.',
+    ['Pre-audit', 'Documentation', 'Security testing', 'Remediation'],
+    [['Readiness assessment', 'Where you stand against the requirements.'], ['Pre-audit testing', 'Security and quality testing before the real one.'], ['Documentation', 'Evidence packs and records in order.'], ['Audit support', 'Liaison and fast fixes during the audit.']],
+    [['Assess', 'Gap check against requirements.'], ['Fix', 'Test, remediate, document.'], ['Submit', 'Support through the audit.']],
+    { k: 'flow', t: 'Road to certification', d: ['Readiness', 'Pre-audit', 'Fix', 'STQC audit', 'Certified'] }, { accent: '#c57a1f' }),
+
   { ...S('managed-services', 'Managed Security', 'Your security team, on call.', 'eye', 'radar',
     'Most firms cannot staff a 24x7 security team. Managed services give you one, without the hiring.',
     ['24x7', 'SOC', 'EDR / XDR', 'Reports'],
@@ -283,9 +333,22 @@ const raw: In[] = [
 ];
 
 // stitch up hrefs and parent links
+// which laptop dashboard each page shows (see Screen.astro)
+const screenOf: Record<string, string> = {
+  'audit-assurance': 'reg', 'it-audit': 'scanner', 'system-audit': 'siem',
+  'security-certifications': 'grc', 'iso-27001': 'reg', 'iso-42001': 'ai', 'pci-dss': 'pay', 'hipaa': 'siem', 'dpdp-act': 'privacy',
+  'vapt': 'scanner', 'application-vapt': 'proxy', 'sast': 'code', 'dast': 'scanner', 'network-vapt': 'network', 'firewall-vapt': 'fw', 'endpoint-vapt': 'edr', 'cloud-vapt': 'cloud',
+  'data-protection': 'privacy', 'dlp': 'dlp', 'continuous-assessment': 'grc', 'data-localization': 'network',
+  'ot-security': 'ot', 'secure-networking': 'network', 'network-redesign': 'reg',
+  'regulatory-audits': 'reg', 'sebi-cscrf': 'grc', 'exchange-audit': 'siem', 'depository-audit': 'grc', 'irdai-audit': 'board', 'rbi-audit': 'reg', 'aadhaar-audit': 'privacy',
+  'secure-coding': 'pipeline', 'source-code-review': 'code', 'secure-sdlc': 'grc', 'devsecops': 'pipeline',
+  'cloud-security': 'cloud', 'virtual-advisory': 'board', 'vciso': 'reg', 'vdpo': 'privacy',
+  'accessibility-audit': 'scanner', 'digital-accessibility-audit': 'a11y', 'gigw-audit': 'grc', 'stqc-audit-preparation': 'reg',
+  'managed-services': 'board', 'managed-soc': 'siem', 'managed-edr-xdr': 'edr',
+};
 export const services: Svc[] = raw.map((c) => {
-  const cat: Svc = { ...(c as Svc), href: `/services/${c.slug}/` };
-  cat.kids = (c.kids as Svc[] | undefined)?.map((k) => ({ ...k, href: `/services/${c.slug}/${k.slug}/`, parent: cat }));
+  const cat: Svc = { ...(c as Svc), href: `/services/${c.slug}/`, screen: screenOf[c.slug] ?? 'grc' };
+  cat.kids = (c.kids as Svc[] | undefined)?.map((k) => ({ ...k, href: `/services/${c.slug}/${k.slug}/`, parent: cat, screen: screenOf[k.slug] ?? 'grc' }));
   return cat;
 });
 export const allPages: Svc[] = services.flatMap((c) => [c, ...(c.kids ?? [])]);

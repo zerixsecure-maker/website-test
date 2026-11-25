@@ -1,0 +1,148 @@
+---
+// A realistic product screen drawn in HTML/SVG. Content is derived from the page's own data,
+// so two pages that share a screen type still read differently.
+import { icons } from '../data/icons';
+const { svc } = Astro.props;
+const type: string = Astro.props.type ?? svc.screen ?? 'grc';
+const hs = ([...svc.slug] as string[]).reduce((a, c) => (a * 31 + c.charCodeAt(0)) | 0, 7);
+const r = (i: number, m: number, o = 0) => o + (Math.abs(Math.imul(hs ^ Math.imul(i + 1, 2654435761), 2246822519) >>> 8) % m);
+const W: string[] = svc.what.map((x: string[]) => x[0]);
+const C: string[] = svc.chips; const H: string[] = svc.how.map((x: string[]) => x[0]); const w = svc.w;
+const feed = w.k === 'feed' ? w.d.map((l: string) => ({ t: l.replace(/^!/, ''), warn: l.startsWith('!') }))
+  : W.flatMap((t, i) => [{ t: `${t}: completed`, warn: false }, { t: `${C[i % 4]} check ${i % 2 ? 'passed' : 'flagged'}`, warn: i % 2 === 0 }]);
+const bars: [string, number][] = w.k === 'bars' ? w.d : W.map((t, i) => [t, [82, 66, 54, 41][i]] as [string, number]);
+const score = w.k === 'gauge' ? w.v : 60 + r(9, 30);
+const ser = (k: number, n = 14) => Array.from({ length: n }, (_, i) => 12 + r(k * 17 + i, 30) + i * 1.4);
+const path = (s: number[], W_ = 200, H_ = 60) => s.map((y, i) => `${i ? 'L' : 'M'}${((i * W_) / (s.length - 1)).toFixed(1)} ${(H_ - y).toFixed(1)}`).join('');
+const dn = (vals: number[]) => { let o = 0; const t = vals.reduce((a, b) => a + b, 0); return vals.map((v) => { const p = (v / t) * 100; const x = { p, o: -o }; o += p; return x; }); };
+const dark = ['siem', 'code', 'pipeline', 'ot', 'edr', 'proxy'].includes(type);
+const rail = [svc.icon, 'network', 'checklist', 'gauge', 'server'];
+const sev = ['#e0455b', '#f08a3c', '#e6c13a', '#4aa3df'];
+const rawReq = '<span class="k">POST</span> /api/orders HTTP/1.1\nHost: app.example.com\n\n{"id": "<span class="pay">1042 OR 1=1</span>"}\n\n<span class="k">HTTP/1.1 500</span> <span class="wn">SQL syntax error</span>';
+const rows2 = (a: any[]) => [...a, ...a];
+---
+<div class={`zs ${dark ? 'dk' : ''} t-${type}`}>
+  <aside class="zs-rail">
+    <i class="zs-logo"></i>
+    {rail.map((n, i) => <svg viewBox="0 0 100 100" class={i === 0 ? 'on' : ''} aria-hidden="true" set:html={icons[n] ?? icons.shield}></svg>)}
+  </aside>
+  <div class="zs-main">
+    <header class="zs-top"><b>{svc.name}</b><span class="zs-live"><i></i>Live</span><span class="zs-sr"></span><em class="zs-av"></em></header>
+    <div class="zs-body">
+
+    {type === 'siem' && (<>
+      <div class="kp">{[[C[0], `${r(1, 700, 200)}k`], ['Open alerts', r(2, 40, 8)], ['MTTR', `${r(3, 8, 3)}m`], ['Assets', r(4, 900, 1100)]].map(([l, v]) => <div><small>{l}</small><b>{v}</b></div>)}</div>
+      <div class="g2"><div class="cd"><h6>Events over time</h6><svg viewBox="0 0 200 60" preserveAspectRatio="none"><path class="area" d={`${path(ser(1))}L200 60L0 60Z`}/><path class="sln" d={path(ser(1))}/><path class="sln b" d={path(ser(2))}/></svg></div>
+        <div class="cd"><h6>By severity</h6><div class="dnw"><svg viewBox="0 0 36 36">{dn([6, 14, 30, 50]).map((d, i) => <circle cx="18" cy="18" r="15.9" fill="none" stroke={sev[i]} stroke-width="5" stroke-dasharray={`${d.p} ${100 - d.p}`} stroke-dashoffset={d.o + 25}/>)}</svg><ul>{['Critical', 'High', 'Medium', 'Low'].map((s, i) => <li><i style={`background:${sev[i]}`}></i>{s}</li>)}</ul></div></div></div>
+      <div class="cd grow"><h6>Alert queue</h6><div class="rollbox"><div class="roll">{rows2(feed).map((f: any, i: number) => <div class="tr"><time>{String(9 + (i % 8)).padStart(2, '0')}:{String(10 + r(i, 49)).padStart(2, '0')}</time><span>{f.t}</span><u class={`spl ${f.warn ? 'hi' : 'ok'}`}>{f.warn ? 'High' : 'Info'}</u></div>)}</div></div></div>
+    </>)}
+
+    {type === 'scanner' && (<>
+      <div class="kp">{['Critical', 'High', 'Medium', 'Low'].map((l, i) => <div><small><i class="sdot" style={`background:${sev[i]}`}></i>{l}</small><b>{[r(1, 4, 1), r(2, 9, 4), r(3, 14, 9), r(4, 18, 12)][i]}</b></div>)}</div>
+      <div class="cd"><h6>Scan in progress · {C[0]}</h6><div class="pb big"><i style="--v:72"></i></div></div>
+      <div class="g2"><div class="cd grow"><div class="tr head"><span>Finding</span><span>CVSS</span><span>Status</span></div>{W.map((t, i) => <div class="tr"><span>{t}</span><span>{(9.4 - i * 1.6).toFixed(1)}</span><u class={`spl ${['hi', 'hi', 'md', 'ok'][i]}`}>{['Open', 'Open', 'Triaged', 'Fixed'][i]}</u></div>)}</div>
+        <div class="cd"><h6>By category</h6>{bars.slice(0, 4).map((b) => <div class="hb"><span>{b[0]}</span><div class="pb"><i style={`--v:${b[1]}`}></i></div></div>)}</div></div>
+    </>)}
+
+    {type === 'grc' && (<>
+      <div class="kp">{[['Controls', r(1, 60, 90)], ['Implemented', `${score}%`], ['Open tasks', r(2, 18, 6)], ['Evidence', `${r(3, 20, 70)}%`]].map(([l, v]) => <div><small>{l}</small><b>{v}</b></div>)}</div>
+      <div class="g2"><div class="cd grow"><h6>Control families</h6>{W.map((t, i) => <div class="hb"><span>{t}</span><div class="pb"><i style={`--v:${[88, 72, 60, 45][i]}`}></i></div><em>{[88, 72, 60, 45][i]}%</em></div>)}</div>
+        <div class="cd"><h6>Readiness</h6><div class="ring" style={`--v:${score}`}><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15.9" class="rbk"/><circle cx="18" cy="18" r="15.9" class="rfl"/></svg><b>{score}%</b></div>{H.map((h) => <div class="chk"><i></i>{h}</div>)}</div></div>
+    </>)}
+
+    {type === 'code' && (<>
+      <div class="tabs"><span class="on">{svc.slug.split('-')[0]}.service.ts</span><span>auth.ts</span><span>db.ts</span></div>
+      <div class="g2 sfill"><div class="ed">{Array.from({ length: 13 }, (_, i) => <div class={`cl ${i === 6 ? 'bad' : i === 9 ? 'warn' : ''}`}><i>{i + 1}</i><span>{[3, 5, 2, 6, 4].map((x, k) => <b style={`width:${(x + r(i * 5 + k, 8)) * 3}%;background:${['#c995e6', '#7fd1b9', '#f0a35e', '#8fb4ff', '#e9e2f7'][(i + k) % 5]}`}></b>)}</span></div>)}</div>
+        <div class="cd grow"><h6>Findings</h6>{W.map((t, i) => <div class="tr"><span>{t}</span><u class={`spl ${['hi', 'hi', 'md', 'ok'][i]}`}>{['High', 'High', 'Med', 'Low'][i]}</u></div>)}</div></div>
+    </>)}
+
+    {type === 'pipeline' && (<>
+      <div class="stages">{(w.k === 'flow' ? w.d : ['Build', 'Test', 'Scan', 'Deploy']).slice(0, 5).map((s: string, i: number) => <div class="stg" style={`--i:${i}`}><i></i><span>{s}</span></div>)}</div>
+      <div class="g2"><div class="cd grow"><h6>Pipeline log</h6><div class="rollbox"><div class="roll">{rows2(feed).map((f: any) => <div class="lg"><time>$</time><span class={f.warn ? 'wn' : ''}>{f.t}</span></div>)}</div></div></div>
+        <div class="cd"><h6>Gate results</h6>{C.map((c, i) => <div class="hb"><span>{c}</span><u class={`spl ${i === 2 ? 'hi' : 'ok'}`}>{i === 2 ? 'Fail' : 'Pass'}</u></div>)}</div></div>
+    </>)}
+
+    {type === 'cloud' && (<>
+      <div class="g3"><div class="cd"><h6>Accounts</h6>{C.slice(0, 4).map((c, i) => <div class="hb"><i class="sdot" style={`background:${i === 1 ? '#f08a3c' : '#43c59e'}`}></i><span>{c}</span></div>)}</div>
+        <div class="cd c"><h6>Posture score</h6><div class="ring" style={`--v:${score}`}><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15.9" class="rbk"/><circle cx="18" cy="18" r="15.9" class="rfl"/></svg><b>{score}</b></div></div>
+        <div class="cd"><h6>Top issues</h6>{W.slice(0, 3).map((t, i) => <div class="tr"><span>{t}</span><u class={`spl ${['hi', 'md', 'ok'][i]}`}>{['High', 'Med', 'Low'][i]}</u></div>)}</div></div>
+      <div class="cd grow"><h6>Findings by service</h6>{bars.slice(0, 4).map((b) => <div class="hb"><span>{b[0]}</span><div class="pb"><i style={`--v:${b[1]}`}></i></div><em>{b[1]}</em></div>)}</div>
+    </>)}
+
+    {type === 'network' && (<>
+      <div class="g2 sfill"><div class="cd topo"><h6>Live topology</h6>
+        <svg viewBox="0 0 200 120"><g class="eg">{[[100, 60, 30, 20], [100, 60, 170, 20], [100, 60, 30, 100], [100, 60, 170, 100], [100, 60, 100, 12], [100, 60, 100, 108]].map((e, i) => <path d={`M${e[0]} ${e[1]}L${e[2]} ${e[3]}`} class={`ed ${i === 3 ? 'bad' : ''}`}/>)}</g>
+          <circle cx="100" cy="60" r="9" class="hub"/>{[[30, 20], [170, 20], [30, 100], [170, 100], [100, 12], [100, 108]].map((n, i) => <circle cx={n[0]} cy={n[1]} r="5.5" class={`snd ${i === 3 ? 'bad' : ''}`}/>)}</svg></div>
+        <div class="cd"><h6>Zones</h6>{C.map((c, i) => <div class="hb"><span>{c}</span><div class="pb"><i style={`--v:${[80, 55, 40, 25][i]}`}></i></div></div>)}<div class="note">1 unexpected path</div></div></div>
+      <div class="cd"><div class="tr head"><span>Flow</span><span>Port</span><span>Verdict</span></div>{feed.slice(0, 2).map((f: any, i: number) => <div class="tr"><span>{f.t}</span><span>{[443, 3389][i]}</span><u class={`spl ${f.warn ? 'hi' : 'ok'}`}>{f.warn ? 'Review' : 'Allowed'}</u></div>)}</div>
+    </>)}
+
+    {type === 'dlp' && (<>
+      <div class="kp">{[['Events today', r(1, 90, 120)], ['Blocked', r(2, 30, 40)], ['Policies', 24], ['Users', r(3, 200, 400)]].map(([l, v]) => <div><small>{l}</small><b>{v}</b></div>)}</div>
+      <div class="g2"><div class="cd"><h6>By channel</h6>{C.map((c, i) => <div class="hb"><span>{c}</span><div class="pb"><i style={`--v:${[84, 62, 47, 30][i]}`}></i></div></div>)}</div>
+        <div class="cd"><h6>Policy hits</h6><div class="dnw"><svg viewBox="0 0 36 36">{dn([40, 30, 20, 10]).map((d, i) => <circle cx="18" cy="18" r="15.9" fill="none" stroke={['var(--a)', '#8fb4ff', '#f0a35e', '#cfc6e4'][i]} stroke-width="5" stroke-dasharray={`${d.p} ${100 - d.p}`} stroke-dashoffset={d.o + 25}/>)}</svg></div></div></div>
+      <div class="cd grow"><h6>Incidents</h6><div class="rollbox"><div class="roll">{rows2(feed).map((f: any) => <div class="tr"><span>{f.t}</span><u class={`spl ${f.warn ? 'hi' : 'ok'}`}>{f.warn ? 'Held' : 'Logged'}</u></div>)}</div></div></div>
+    </>)}
+
+    {type === 'ot' && (<>
+      <div class="alarm">⚠ {feed.find((f: any) => f.warn)?.t ?? 'Unexpected write command from unknown host'}</div>
+      <div class="g2 sfill"><div class="cd hmi"><svg viewBox="0 0 200 110"><g class="tk">{[28, 98].map((x, i) => <g><rect x={x} y="14" width="34" height="56" rx="5" class="tkb"/><rect x={x + 2} y="16" width="30" height="52" rx="4" class={`tkf f${i}`}/></g>)}</g>
+        <path d="M45 70v20h55M115 70v20H100M100 90h80" class="pipe"/><path d="M45 70v20h55M115 70v20H100M100 90h80" class="sflow"/><circle cx="100" cy="90" r="5" class="vl"/><rect x="160" y="78" width="28" height="24" rx="4" class="plc"/></svg></div>
+        <div class="cd"><h6>PLC tags</h6>{C.map((c, i) => <div class="tr"><span>{c}</span><span>{[4.2, 71, 12.8, 0.9][i]}</span><u class={`spl ${i === 1 ? 'md' : 'ok'}`}>{i === 1 ? 'Warn' : 'OK'}</u></div>)}</div></div>
+    </>)}
+
+    {type === 'reg' && (<>
+      <div class="kp">{[['Days to due', r(1, 60, 20)], ['Open findings', r(2, 12, 3)], ['Evidence', `${r(3, 20, 70)}%`], ['Stage', H[1]]].map(([l, v]) => <div><small>{l}</small><b>{v}</b></div>)}</div>
+      <div class="cd grow gantt"><div class="gh">{['Wk1', 'Wk2', 'Wk3', 'Wk4', 'Wk5', 'Wk6'].map((m) => <span>{m}</span>)}</div>
+        {W.map((t, i) => <div class="gr"><span>{t}</span><div class="gt"><i style={`--s:${i * 14}%;--l:${34 + (i % 2) * 14}%;--i:${i}`}></i></div></div>)}<em class="due">Due</em></div>
+    </>)}
+
+    {type === 'privacy' && (<>
+      <div class="g2 sfill"><div class="cd"><h6>Consent purposes</h6>{C.map((c, i) => <div class="hb"><span>{c}</span><u class={`sw ${i === 2 ? '' : 'on'}`}></u></div>)}</div>
+        <div class="cd grow"><h6>Requests queue</h6>{W.map((t, i) => <div class="tr"><span>{t}</span><u class={`spl ${['ok', 'md', 'md', 'ok'][i]}`}>{['Done', 'Due 3d', 'Due 5d', 'Done'][i]}</u></div>)}</div></div>
+      <div class="cd"><h6>Data map</h6><div class="dmc">{['CRM', 'HRMS', 'Cloud', 'Vendors', 'Backups'].map((c) => <b>{c}</b>)}</div></div>
+    </>)}
+
+    {type === 'a11y' && (<>
+      <div class="g2 sfill"><div class="cd page"><div class="pg-h"><b></b><b></b><b></b></div><div class="pg-hero"><i></i><span class="abx b1">1</span></div><div class="pg-l"><i></i><i></i><i></i></div><div class="pg-img"><span class="abx b2">2</span></div><div class="pg-f"><i></i><i></i><span class="abx b3">3</span></div></div>
+        <div class="cd"><h6>Issues</h6><div class="ring sm" style={`--v:${score}`}><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15.9" class="rbk"/><circle cx="18" cy="18" r="15.9" class="rfl"/></svg><b>{score}</b></div>{bars.slice(0, 3).map((b, i) => <div class="tr"><span>{i + 1}. {b[0]}</span><u class="spl md">{Math.round(b[1] / 8)}</u></div>)}</div></div>
+    </>)}
+
+    {type === 'board' && (<>
+      <div class="g2"><div class="cd"><h6>Cyber risk score</h6><div class="ring" style={`--v:${score}`}><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15.9" class="rbk"/><circle cx="18" cy="18" r="15.9" class="rfl"/></svg><b>{score}</b></div></div>
+        <div class="cd"><h6>Risk trend</h6><svg viewBox="0 0 200 60" preserveAspectRatio="none"><path class="area" d={`${path(ser(5).reverse())}L200 60L0 60Z`}/><path class="sln" d={path(ser(5).reverse())}/></svg></div></div>
+      <div class="g2 sfill"><div class="cd grow"><h6>Top risks</h6>{bars.slice(0, 4).map((b) => <div class="hb"><span>{b[0]}</span><div class="pb"><i style={`--v:${b[1]}`}></i></div></div>)}</div>
+        <div class="cd"><h6>Roadmap</h6>{H.map((h, i) => <div class="chk"><i class={i === 0 ? 'on' : ''}></i>Q{i + 1} · {h}</div>)}</div></div>
+    </>)}
+
+    {type === 'edr' && (<>
+      <div class="alarm">⚠ {feed.find((f: any) => f.warn)?.t ?? 'Ransomware behaviour detected, host isolated'}</div>
+      <div class="g2 sfill"><div class="cd grow"><h6>Devices</h6>{['LAPTOP-FIN-02', 'SRV-DB-01', 'LAPTOP-HR-07', 'SRV-WEB-03'].map((d, i) => <div class="tr"><span><i class="sdot" style={`background:${i === 0 ? '#e0455b' : '#43c59e'}`}></i>{d}</span><u class={`spl ${i === 0 ? 'hi' : 'ok'}`}>{i === 0 ? 'Isolated' : 'Healthy'}</u></div>)}</div>
+        <div class="cd"><h6>Process tree</h6><div class="pt"><span>explorer.exe</span><span class="l1">winword.exe</span><span class="l2 bad">powershell.exe -enc …</span><span class="l3 bad">vssadmin delete shadows</span></div></div></div>
+    </>)}
+
+    {type === 'ai' && (<>
+      <div class="g2 sfill"><div class="cd grow"><h6>Model register</h6>{['Credit scoring', 'Support assistant', 'Fraud detector', 'Document classifier'].map((m, i) => <div class="tr"><span>{m}</span><u class={`spl ${['md', 'ok', 'hi', 'ok'][i]}`}>{['Medium', 'Low', 'High', 'Low'][i]}</u></div>)}</div>
+        <div class="cd"><h6>Risk profile</h6><svg viewBox="0 0 100 100" class="rad"><g class="rg">{[40, 28, 16].map((q) => <polygon points={[0, 1, 2, 3, 4].map((k) => `${(50 + q * Math.sin((k * 2 * Math.PI) / 5)).toFixed(1)},${(50 - q * Math.cos((k * 2 * Math.PI) / 5)).toFixed(1)}`).join(' ')}/>)}</g>
+          <polygon class="rp" points={bars.slice(0, 5).map((b, k) => `${(50 + (b[1] * 0.4) * Math.sin((k * 2 * Math.PI) / 5)).toFixed(1)},${(50 - (b[1] * 0.4) * Math.cos((k * 2 * Math.PI) / 5)).toFixed(1)}`).join(' ')}/></svg></div></div>
+    </>)}
+
+    {type === 'pay' && (<>
+      <div class="flowd"><span>POS</span><i></i><span>Network</span><i></i><span class="fw">Firewall</span><i></i><span class="cde">CDE</span></div>
+      <div class="cd grow"><h6>PCI DSS requirements</h6><div class="req">{Array.from({ length: 12 }, (_, i) => <b style={`--i:${i}`} class={i === 4 ? 'gap' : ''}>{i + 1}</b>)}</div></div>
+    </>)}
+
+    {type === 'proxy' && (<>
+      <div class="g2 sfill"><div class="cd grow"><h6>HTTP history</h6>{[['GET', '/login'], ['POST', '/api/orders'], ['GET', '/api/orders/1042'], ['POST', '/otp/verify']].map((x, i) => <div class="tr"><span><i class={`mt ${x[0]}`}>{x[0]}</i>{x[1]}</span><u class={`spl ${i === 2 ? 'hi' : 'ok'}`}>{i === 2 ? '200' : i === 1 ? '201' : '302'}</u></div>)}</div>
+        <div class="cd grow raw"><h6>Request</h6><pre set:html={rawReq}></pre></div></div>
+    </>)}
+
+    {type === 'fw' && (<>
+      <div class="cd grow"><div class="tr head r6"><span>#</span><span>Source</span><span>Dest</span><span>Port</span><span>Action</span></div>
+        {[['1', 'LAN', 'Internet', '443', 'Allow'], ['2', 'Any', 'DMZ', '80', 'Allow'], ['3', 'Guest', 'Servers', 'Any', 'Allow'], ['4', 'VPN', 'LAN', '3389', 'Allow'], ['5', 'Any', 'Any', 'Any', 'Deny']].map((x, i) => <div class={`tr r6 ${i === 2 ? 'bad' : ''}`}>{x.slice(0, 4).map((c) => <span>{c}</span>)}<u class={`spl ${x[4] === 'Deny' ? 'ok' : i === 2 ? 'hi' : 'md'}`}>{x[4]}</u></div>)}</div>
+      <div class="cd"><h6>Rule risk</h6>{bars.slice(0, 3).map((b) => <div class="hb"><span>{b[0]}</span><div class="pb"><i style={`--v:${b[1]}`}></i></div></div>)}</div>
+    </>)}
+
+    </div>
+  </div>
+</div>

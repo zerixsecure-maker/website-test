@@ -1,0 +1,10 @@
+---
+import Screen from './Screen.astro';
+const { svc, tilt = 'a' } = Astro.props;
+---
+<figure class={`lap tilt-${tilt}`} style={`--a:${svc.accent}`}>
+  <div class="lap-lid"><i class="lap-cam"></i><div class="lap-scr"><Screen svc={svc} /></div></div>
+  <div class="lap-base"><i></i></div>
+  {svc.chips.slice(0, 3).map((c: string, i: number) => <span class={`lap-chip c${i}`}>{c}</span>)}
+  <figcaption>Illustrative screen</figcaption>
+</figure>

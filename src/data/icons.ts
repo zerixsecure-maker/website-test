@@ -42,4 +42,7 @@ export const icons: Record<string, string> = {
   gear: '<circle cx="50" cy="50" r="14"/><path d="M50 10v14M50 76v14M10 50h14M76 50h14M22 22l10 10M68 68l10 10M78 22L68 32M32 68L22 78"/><path class="acc" d="M44 50l5 5 8-9"/>',
   itsm: '<path d="M12 30h76v14a6 6 0 000 12v14H12V56a6 6 0 000-12z"/><path class="acc" d="M62 34v32" stroke-dasharray="3 4"/><path d="M26 44h24M26 56h16"/>',
   more: '<circle cx="24" cy="50" r="6"/><circle class="acc" cx="50" cy="50" r="6"/><circle cx="76" cy="50" r="6"/>',
+  vciso: '<circle cx="50" cy="30" r="14"/><path d="M22 86c0-18 12-30 28-30s28 12 28 30z"/><path class="acc" d="M44 66l6 6 10-12"/>',
+  access: '<circle cx="50" cy="50" r="38"/><circle class="acc" cx="50" cy="26" r="5"/><path d="M26 40h48M50 40v18M50 58L38 78M50 58l12 20"/>',
+  stamp: '<path d="M38 56h24c0-8-4-12-4-22a8 8 0 10-16 0c0 10-4 14-4 22z"/><rect x="26" y="56" width="48" height="12" rx="3"/><path class="acc" d="M20 84h60"/>',
 };
