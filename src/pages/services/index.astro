@@ -1,0 +1,66 @@
+---
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import Viz from '../../components/Viz.astro';
+import { services } from '../../data/services';
+import { icons } from '../../data/icons';
+import { company } from '../../data/site';
+const mail = `mailto:${company.email}?subject=${encodeURIComponent('Services enquiry')}`;
+---
+<Base title="Services | Zerix Securities" description="Audit, certifications, VAPT, data protection, OT and cloud security, regulatory audits, secure coding and managed security from Zerix Securities." path="/services/">
+  <Header current="services" />
+  <main id="main" class="sv">
+    <section class="sv-head">
+      <div class="wrap">
+        <div class="kicker">Our services</div>
+        <h1>Everything we do to keep you secure.</h1>
+        <p class="sv-lead">Pick a category to see what is inside. Every service has its own page.</p>
+      </div>
+    </section>
+    <section class="sv-ex">
+      <div class="wrap">
+        <ul class="ex" style={`--n:${services.length}`}>
+          {services.map((c, i) => (
+            <li class={`ex-i${i === 0 ? ' on' : ''}`} style={`--a:${c.accent};--r:${i + 1}`}>
+              <button type="button" class="ex-b" aria-expanded={i === 0 ? 'true' : 'false'}>
+                <span class="ex-no">{String(i + 1).padStart(2, '0')}</span>
+                <svg viewBox="0 0 100 100" aria-hidden="true" set:html={icons[c.icon]}></svg>
+                <span class="ex-n">{c.name}</span>
+                <span class="ex-c">{c.kids ? `${c.kids.length} services` : 'View'}</span>
+                <i class="ex-arr" aria-hidden="true">→</i>
+              </button>
+              <div class="ex-p">
+                <Viz icon={c.icon} motif={c.motif} chips={c.chips} accent={c.accent} class="ex-viz" />
+                <div class="ex-t">
+                  <h2>{c.name}</h2>
+                  <p>{c.tag}</p>
+                  {c.kids ? (
+                    <ul class="ex-k">{c.kids.map((k) => <li><a href={k.href}>{k.name}<span>→</span></a></li>)}</ul>
+                  ) : null}
+                  <a class="btn btn-primary" href={c.href}>{c.kids ? `Explore ${c.name}` : `View ${c.name}`} <span class="arr">→</span></a>
+                </div>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+    <section class="sp-cta">
+      <div class="wrap cta-in">
+        <h2>Not sure where to start?</h2>
+        <p>Tell us what you are worried about. We will point you to the right service.</p>
+        <div class="sp-btns"><a class="btn btn-primary" href={mail}>Talk to an expert <span class="arr">→</span></a><a class="btn btn-ghost" href="/products/">See our products</a></div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+  <script>
+    const items = [...document.querySelectorAll<HTMLElement>('.ex-i')];
+    const open = (el: HTMLElement) => { items.forEach((i) => { const on = i === el; i.classList.toggle('on', on); i.querySelector('.ex-b')?.setAttribute('aria-expanded', String(on)); }); };
+    items.forEach((i) => {
+      i.querySelector('.ex-b')?.addEventListener('click', () => open(i));
+      i.querySelector('.ex-b')?.addEventListener('mouseenter', () => { if (matchMedia('(hover: hover) and (min-width: 62rem)').matches) open(i); });
+    });
+  </script>
+</Base>

@@ -1,0 +1,45 @@
+---
+import { icons } from '../data/icons';
+const { icon, motif = 'radar', chips = [], accent = '#7a3fb0', class: cls = '' } = Astro.props;
+---
+<div class={`vzc m-${motif} ${cls}`} style={`--a:${accent}`}>
+  <svg class="vz-bg" viewBox="0 0 480 360" aria-hidden="true" preserveAspectRatio="xMidYMid slice">
+    <defs>
+      <radialGradient id="vzg"><stop offset="0" style="stop-color:var(--a);stop-opacity:.0"/><stop offset="1" style="stop-color:var(--a);stop-opacity:.28"/></radialGradient>
+      <pattern id="vzd" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.3" style="fill:var(--a);opacity:.25"/></pattern>
+    </defs>
+    {motif === 'radar' && (<g>
+      <circle cx="240" cy="180" r="62" class="vz-l"/><circle cx="240" cy="180" r="112" class="vz-l"/><circle cx="240" cy="180" r="162" class="vz-l"/>
+      <path d="M240 180V18A162 162 0 01383 98z" fill="url(#vzg)" class="vz-sweep"/>
+      <circle cx="320" cy="110" r="5" class="vz-blip"/><circle cx="160" cy="250" r="5" class="vz-blip b2"/><circle cx="352" cy="244" r="5" class="vz-blip b3"/>
+    </g>)}
+    {motif === 'orbit' && (<g>
+      <ellipse cx="240" cy="180" rx="170" ry="70" class="vz-l vz-dash"/><ellipse cx="240" cy="180" rx="170" ry="70" class="vz-l vz-dash r2" transform="rotate(60 240 180)"/><ellipse cx="240" cy="180" rx="170" ry="70" class="vz-l vz-dash r3" transform="rotate(-60 240 180)"/>
+      <g class="vz-spin"><circle cx="410" cy="180" r="6" class="vz-dot"/><circle cx="70" cy="180" r="4" class="vz-dot o"/></g>
+    </g>)}
+    {motif === 'flow' && (<g>
+      <rect width="480" height="360" fill="url(#vzd)"/>
+      {[110, 180, 250].map((y, i) => (<g><path d={`M0 ${y}H480`} class="vz-l"/><path d={`M0 ${y}H480`} class="vz-pkt" style={`animation-delay:${-i * .9}s`}/></g>))}
+    </g>)}
+    {motif === 'grid' && (<g>
+      <rect width="480" height="360" fill="url(#vzd)"/><rect x="0" y="0" width="480" height="46" fill="url(#vzg)" class="vz-scan"/><path d="M0 0H480" class="vz-scanl"/>
+    </g>)}
+    {motif === 'rings' && (<g>
+      {[0, 1, 2].map((i) => <circle cx="240" cy="180" r="60" class="vz-ring" style={`animation-delay:${-i * 1.5}s`}/>)}
+      <circle cx="240" cy="180" r="60" class="vz-l"/>
+    </g>)}
+    {motif === 'wave' && (<g>
+      <rect width="480" height="360" fill="url(#vzd)"/>
+      <path d="M0 300h60l14-34 20 62 18-44 14 16h70l16-50 22 90 16-40h60l14-26 20 52 14-26h122" class="vz-wave"/>
+      <path d="M0 60h90l12-22 16 40 14-18h80l12-30 18 56 12-26h226" class="vz-wave w2"/>
+    </g>)}
+    {motif === 'cycle' && (<g>
+      <circle cx="240" cy="180" r="120" class="vz-l"/><circle cx="240" cy="180" r="120" class="vz-l vz-dash cyc"/>
+      <g class="vz-spin"><path d="M240 60l10 12h-20z" class="vz-arrow"/><path d="M240 300l-10-12h20z" class="vz-arrow"/></g>
+      <circle cx="240" cy="180" r="78" class="vz-l vz-dot2"/>
+    </g>)}
+  </svg>
+  <i class="vz-disc"></i>
+  <svg class="vz-ic" viewBox="0 0 100 100" aria-hidden="true" set:html={icons[icon] ?? icons.shield}></svg>
+  {chips.slice(0, 4).map((c: string, i: number) => <span class={`vz-chip c${i}`}>{c}</span>)}
+</div>

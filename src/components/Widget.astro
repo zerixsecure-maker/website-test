@@ -1,0 +1,65 @@
+---
+const { w } = Astro.props;
+const R = 44, C = 2 * Math.PI * R;
+const tot = w.k === 'donut' ? w.d.reduce((a: number, b: [string, number]) => a + b[1], 0) : 0;
+let acc = 0;
+const segs = w.k === 'donut' ? w.d.map((d: [string, number], i: number) => { const len = (d[1] / tot) * C; const o = { l: d[0], v: d[1], len, off: -acc, i }; acc += len; return o; }) : [];
+const lvl = (r: number, c: number) => ((r * 7 + c * 5 + r * c * 3) % 4);
+---
+<section class={`wd k-${w.k}`} data-k={w.k} data-lines={w.k === 'feed' ? JSON.stringify(w.d) : undefined}>
+  <header class="wd-h"><h3>{w.t}</h3><span class="wd-tag"><i></i>Sample view</span></header>
+  {w.k === 'feed' && (<ul class="wd-feed">{w.d.slice(0, 5).map((l: string) => <li class={l.startsWith('!') ? 'warn' : ''}><time>{'00:00'}</time><span>{l.replace(/^!/, '')}</span></li>)}</ul>)}
+  {w.k === 'bars' && (<div class="wd-bars">{w.d.map((d: [string, number], i: number) => (<div class="bar" style={`--v:${d[1]};--i:${i}`}><b><em></em></b><span>{d[0]}</span><i>{d[1]}</i></div>))}</div>)}
+  {w.k === 'gauge' && (<div class="wd-gauge" style={`--v:${w.v}`}>
+    <svg viewBox="0 0 120 70" aria-hidden="true"><path class="g-bg" d="M10 62a50 50 0 01100 0"/><path class="g-fg" d="M10 62a50 50 0 01100 0" pathLength="100"/></svg>
+    <div class="g-n"><strong data-count={w.v}>0</strong><small>%</small></div><div class="g-l">{w.l}</div></div>)}
+  {w.k === 'heat' && (<div class="wd-heat" style={`--c:${w.cols.length}`}>
+    <div class="h-cols"><span></span>{w.cols.map((c: string) => <span>{c}</span>)}</div>
+    {w.rows.map((r: string, ri: number) => (<div class="h-row"><span>{r}</span>{w.cols.map((_: string, ci: number) => <i class={`l${lvl(ri, ci)}`}></i>)}</div>))}
+    <div class="h-key"><span>Low</span><i class="l0"></i><i class="l1"></i><i class="l2"></i><i class="l3"></i><span>High</span></div></div>)}
+  {w.k === 'flow' && (<ol class="wd-flow" style={`--n:${w.d.length}`}>{w.d.map((d: string, i: number) => <li style={`--i:${i}`}><b>{i + 1}</b><span>{d}</span></li>)}</ol>)}
+  {w.k === 'donut' && (<div class="wd-donut">
+    <svg viewBox="0 0 120 120" aria-hidden="true"><circle class="d-bg" cx="60" cy="60" r={R}/>
+      <g transform="rotate(-90 60 60)">{segs.map((s: any) => <circle class={`d-seg s${s.i}`} cx="60" cy="60" r={R} stroke-dasharray={`${s.len} ${C}`} stroke-dashoffset={s.off} style={`--len:${s.len};--c:${C}`}/>)}</g></svg>
+    <ul>{segs.map((s: any) => <li class={`s${s.i}`}><i></i><span>{s.l}</span><b>{s.v}%</b></li>)}</ul></div>)}
+  {w.k === 'count' && (<div class="wd-count">{w.d.map((d: [string, number, string]) => <div><strong><span data-count={d[1]}>0</span>{d[2]}</strong><small>{d[0]}</small></div>)}</div>)}
+</section>
+<script>
+  const clock = (n: number) => { const t = new Date(Date.now() - n * 7000); return t.toTimeString().slice(0, 8); };
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const count = (el: HTMLElement) => {
+    const to = +(el.dataset.count || 0); if (reduce) { el.textContent = String(to); return; }
+    const t0 = performance.now(), d = 1300;
+    const tick = (t: number) => { const p = Math.min(1, (t - t0) / d); el.textContent = String(Math.round(to * (1 - Math.pow(1 - p, 3)))); if (p < 1) requestAnimationFrame(tick); };
+    requestAnimationFrame(tick);
+  };
+  document.querySelectorAll<HTMLElement>('.wd').forEach((w) => {
+    const k = w.dataset.k; let timer = 0; let on = false;
+    w.querySelectorAll('.wd-feed time').forEach((t, i) => (t.textContent = clock(i)));
+    const start = () => {
+      if (on) return; on = true; w.classList.add('in');
+      w.querySelectorAll<HTMLElement>('[data-count]').forEach(count);
+      if (reduce) return;
+      if (k === 'feed') {
+        const lines: string[] = JSON.parse(w.dataset.lines || '[]'); const ul = w.querySelector('.wd-feed')!; let n = 5;
+        timer = window.setInterval(() => {
+          const l = lines[n++ % lines.length]; const li = document.createElement('li'); if (l.startsWith('!')) li.className = 'warn';
+          li.innerHTML = `<time>${clock(0)}</time><span></span>`; (li.querySelector('span') as HTMLElement).textContent = l.replace(/^!/, '');
+          ul.prepend(li); while (ul.children.length > 6) ul.lastElementChild!.remove();
+        }, 2000);
+      } else if (k === 'heat') {
+        const cells = [...w.querySelectorAll<HTMLElement>('.h-row i')];
+        timer = window.setInterval(() => { const c = cells[Math.floor(Math.random() * cells.length)]; c.className = 'l' + Math.floor(Math.random() * 4); }, 650);
+      } else if (k === 'flow') {
+        const li = [...w.querySelectorAll<HTMLElement>('.wd-flow li')]; let i = 0;
+        const step = () => { li.forEach((x, j) => { x.classList.toggle('done', j < i); x.classList.toggle('cur', j === i); }); w.style.setProperty('--p', String(i / Math.max(1, li.length - 1))); i = (i + 1) % (li.length + 1); };
+        step(); timer = window.setInterval(step, 1500);
+      } else if (k === 'bars') {
+        const bars = [...w.querySelectorAll<HTMLElement>('.bar')];
+        timer = window.setInterval(() => { const b = bars[Math.floor(Math.random() * bars.length)]; const base = +(b.style.getPropertyValue('--v') || 50); b.style.setProperty('--w', String(Math.max(8, Math.min(98, base + (Math.random() * 14 - 7))))); }, 1100);
+      }
+    };
+    const stop = () => { clearInterval(timer); on = false; };
+    new IntersectionObserver((es) => es.forEach((e) => (e.isIntersecting ? start() : stop())), { threshold: 0.25 }).observe(w);
+  });
+</script>

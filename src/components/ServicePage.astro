@@ -1,0 +1,91 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import Viz from './Viz.astro';
+import Widget from './Widget.astro';
+import { allPages, type Svc } from '../data/services';
+import { company } from '../data/site';
+import { icons } from '../data/icons';
+const { svc } = Astro.props as { svc: Svc };
+const parent = svc.parent;
+const kids = svc.kids ?? [];
+const sibs = (parent?.kids ?? []).filter((s) => s.slug !== svc.slug);
+const idx = allPages.findIndex((p) => p.slug === svc.slug);
+const flip = idx % 2 === 1;          // hero art left/right
+const widgetFirst = idx % 3 === 0;   // dashboard above or below "what we do"
+const crumbs = [{ n: 'Services', h: '/services/' }, ...(parent ? [{ n: parent.name, h: parent.href }] : []), { n: svc.name, h: svc.href }];
+const mail = `mailto:${company.email}?subject=${encodeURIComponent(svc.name + ' enquiry')}`;
+---
+<Base title={`${svc.name} | Zerix Securities`} description={`${svc.tag} ${svc.need}`} path={svc.href}>
+  <Header current="services" />
+  <main id="main" class="svp" style={`--a:${svc.accent}`}>
+    <section class={`sp-hero${flip ? ' flip' : ''}`}>
+      <div class="wrap sp-hero-in">
+        <div class="sp-copy">
+          <nav class="crumbs" aria-label="Breadcrumb">{crumbs.map((c, i) => i < crumbs.length - 1 ? <><a href={c.h}>{c.n}</a><span>/</span></> : <span class="cur" aria-current="page">{c.n}</span>)}</nav>
+          <h1>{svc.name}</h1>
+          <p class="sp-tag">{svc.tag}</p>
+          <div class="sp-btns"><a class="btn btn-primary" href={mail}>Talk to an expert <span class="arr">→</span></a><a class="btn btn-ghost" href="#how">How we help</a></div>
+        </div>
+        <Viz icon={svc.icon} motif={svc.motif} chips={svc.chips} accent={svc.accent} />
+      </div>
+    </section>
+
+    <section class="sp-need">
+      <div class="wrap need-in reveal">
+        <div class="kicker">The need of the hour</div>
+        <p class="need-t">{svc.need}</p>
+      </div>
+    </section>
+
+    {widgetFirst && <section class="sp-sec"><div class="wrap reveal"><Widget w={svc.w} /></div></section>}
+
+    <section class="sp-sec" id="what">
+      <div class="wrap">
+        <div class="sec-row reveal"><div><div class="kicker">What we do</div><h2>{svc.name}, in practice</h2></div>
+          <div class="rail-btns"><button type="button" class="rb" data-dir="-1" aria-label="Scroll left">←</button><button type="button" class="rb" data-dir="1" aria-label="Scroll right">→</button></div></div>
+        <div class="rail reveal" tabindex="0" aria-label={`What we do in ${svc.name}`}>
+          {svc.what.map((w, i) => (<article class="rcard"><span class="rno">{String(i + 1).padStart(2, '0')}</span><svg viewBox="0 0 100 100" aria-hidden="true" set:html={icons[svc.icon]}></svg><h3>{w[0]}</h3><p>{w[1]}</p></article>))}
+        </div>
+      </div>
+    </section>
+
+    {!widgetFirst && <section class="sp-sec"><div class="wrap reveal"><Widget w={svc.w} /></div></section>}
+
+    <section class="sp-sec" id="how">
+      <div class="wrap">
+        <div class="sec-row reveal"><div><div class="kicker">How we help</div><h2>Three steps, no surprises</h2></div></div>
+        <ol class="how reveal">
+          {svc.how.map((h, i) => (<li style={`--i:${i}`}><b>{i + 1}</b><h3>{h[0]}</h3><p>{h[1]}</p></li>))}
+        </ol>
+      </div>
+    </section>
+
+    {(kids.length > 0 || sibs.length > 0) && (
+      <section class="sp-sec">
+        <div class="wrap">
+          <div class="sec-row reveal"><div><div class="kicker">{kids.length ? `Within ${svc.name}` : `More in ${parent?.name}`}</div><h2>{kids.length ? 'Choose a service' : 'Related services'}</h2></div></div>
+          <div class="rel reveal">
+            {(kids.length ? kids : sibs).map((k) => (<a class="rel-c" href={k.href} style={`--a:${k.accent}`}><svg viewBox="0 0 100 100" aria-hidden="true" set:html={icons[k.icon]}></svg><span><b>{k.name}</b><small>{k.tag}</small></span><em>→</em></a>))}
+          </div>
+        </div>
+      </section>
+    )}
+
+    <section class="sp-cta">
+      <div class="wrap cta-in reveal">
+        <h2>Let us look at your {svc.name} needs.</h2>
+        <p>A short call is enough to scope it. No pressure, no jargon.</p>
+        <div class="sp-btns"><a class="btn btn-primary" href={mail}>Talk to an expert <span class="arr">→</span></a><a class="btn btn-ghost" href="/services/">All services</a></div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Base>
+<script>
+  document.querySelectorAll<HTMLElement>('.sec-row').forEach((row) => {
+    const rail = row.parentElement?.querySelector<HTMLElement>('.rail'); if (!rail) return;
+    row.querySelectorAll<HTMLElement>('.rb').forEach((b) => b.addEventListener('click', () => rail.scrollBy({ left: +(b.dataset.dir || 1) * rail.clientWidth * 0.7, behavior: 'smooth' })));
+  });
+</script>

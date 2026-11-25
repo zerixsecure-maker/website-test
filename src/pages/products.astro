@@ -1,4 +1,45 @@
 ---
-import Stub from '../layouts/Stub.astro';
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Viz from '../components/Viz.astro';
+import Widget from '../components/Widget.astro';
+import { products } from '../data/services';
+import { company } from '../data/site';
+const mail = `mailto:${company.email}?subject=${encodeURIComponent('Products enquiry')}`;
+const w = { k: 'feed', t: 'Z Sites, security operations view', d: ['New alert: brute force on VPN', '!Ransomware behaviour on endpoint, isolated', 'Patch deployed to 120 devices', 'Device enrolled in MDM, policy applied', 'Ticket INC-2041 raised and assigned', 'Threat intel match checked, benign'] };
 ---
-<Stub slug="products" kicker="What we offer" title="Products" lead="Managed security tools and services from Zerix Securities." />
+<Base title="Products | Zerix Securities" description="Z Sites SOC platform, EDR/XDR, MDM, patch management and ITSM from Zerix Securities." path="/products/">
+  <Header current="products" />
+  <main id="main" class="sv">
+    <section class="sv-head">
+      <div class="wrap">
+        <div class="kicker">Our products</div>
+        <h1>Tools that keep you secure, every day.</h1>
+        <p class="sv-lead">Our own platform and the tools we run for clients. Used on their own, or as part of our managed services.</p>
+      </div>
+    </section>
+    <section class="sv-ex">
+      <div class="wrap">
+        <div class="prod reveal">
+          {products.map((p) => (
+            <article class="prod-c" style={`--a:${p.accent}`}>
+              <Viz icon={p.icon} motif={p.motif} chips={p.chips} accent={p.accent} class="prod-viz" />
+              <h2>{p.name}</h2>
+              <p>{p.tag}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+    <section class="sp-sec"><div class="wrap reveal" style="--a:#7a3fb0"><Widget w={w} /></div></section>
+    <section class="sp-cta">
+      <div class="wrap cta-in reveal">
+        <h2>Want to see it running?</h2>
+        <p>We will show you a live walkthrough, or run it for you as a managed service.</p>
+        <div class="sp-btns"><a class="btn btn-primary" href={mail}>Request a demo <span class="arr">→</span></a><a class="btn btn-ghost" href="/services/managed-services/">Managed security</a></div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Base>

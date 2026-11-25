@@ -1,6 +1,8 @@
 ---
 import { navLinks } from '../data/site';
+import { services } from '../data/services';
 const { current = '' } = Astro.props;
+const grouped = (kids: any[]) => { const g: [string, any[]][] = []; kids.forEach((k) => { const n = k.group ?? ''; const f = g.find((x) => x[0] === n); f ? f[1].push(k) : g.push([n, [k]]); }); return g; };
 const here = (href?: string) => (href && current && href.replace(/\//g, '') === current ? 'page' : undefined);
 ---
 <header class="site-header">
@@ -11,7 +13,25 @@ const here = (href?: string) => (href && current && href.replace(/\//g, '') === 
     </a>
     <nav aria-label="Main">
       <ul class="desk-nav">
-        {navLinks.map((l) => l.children ? (
+        {navLinks.map((l) => l.tree ? (
+          <li class="has-sub has-tree">
+            <button type="button" class="sub-btn" aria-haspopup="true" aria-expanded="false">{l.label}<svg viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="sub tree">
+              <ul class="tree-l">
+                {services.map((c) => (
+                  <li class="t-cat">
+                    <a href={c.href} class="t-a">{c.name}{c.kids && <i aria-hidden="true">›</i>}</a>
+                    <div class="tree-r">
+                      <a class="t-head" href={c.href}>{c.name}<small>{c.tag}</small></a>
+                      {c.kids ? grouped(c.kids).map(([g, ks]) => (<div class="t-grp">{g && <span class="t-gl">{g}</span>}{ks.map((k: any) => <a href={k.href}>{k.name}</a>)}</div>)) : <span class="t-one">One focused service. View details →</span>}
+                    </div>
+                  </li>
+                ))}
+              </ul>
+              <a class="t-all" href="/services/">All services <span>→</span></a>
+            </div>
+          </li>
+        ) : l.children ? (
           <li class="has-sub">
             <button type="button" class="sub-btn" aria-haspopup="true" aria-expanded="false">{l.label}<svg viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
             <ul class="sub">
@@ -28,7 +48,16 @@ const here = (href?: string) => (href && current && href.replace(/\//g, '') === 
   </div>
   <nav class="mobile-nav" id="mnav" aria-label="Mobile">
     <ul>
-      {navLinks.map((l) => l.children ? (
+      {navLinks.map((l) => l.tree ? (
+        <li class="m-group"><span>{l.label}</span>
+          <ul>
+            <li><a href="/services/">All services</a></li>
+            {services.map((c) => (
+              <li class="m-cat">{c.kids ? (<details><summary>{c.name}</summary><ul><li><a href={c.href}>Overview</a></li>{c.kids.map((k) => <li><a href={k.href}>{k.name}</a></li>)}</ul></details>) : <a href={c.href}>{c.name}</a>}</li>
+            ))}
+          </ul>
+        </li>
+      ) : l.children ? (
         <li class="m-group"><span>{l.label}</span>
           <ul>{l.children.map((c) => <li><a href={c.href}>{c.label}</a></li>)}</ul>
         </li>

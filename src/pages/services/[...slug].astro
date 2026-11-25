@@ -1,0 +1,9 @@
+---
+import ServicePage from '../../components/ServicePage.astro';
+import { allPages } from '../../data/services';
+export function getStaticPaths() {
+  return allPages.map((s) => ({ params: { slug: s.href.replace(/^\/services\//, '').replace(/\/$/, '') }, props: { svc: s } }));
+}
+const { svc } = Astro.props;
+---
+<ServicePage svc={svc} />
