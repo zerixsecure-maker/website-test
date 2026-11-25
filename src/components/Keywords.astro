@@ -1,0 +1,12 @@
+---
+import { keywords } from '../data/announcements';
+---
+<div class="kw" aria-label="What we cover">
+  <div class="kw-track">
+    {[0, 1].map((n) => (
+      <ul class="kw-set" aria-hidden={n === 1 ? 'true' : undefined}>
+        {keywords.map((k) => <li>{k}</li>)}
+      </ul>
+    ))}
+  </div>
+</div>

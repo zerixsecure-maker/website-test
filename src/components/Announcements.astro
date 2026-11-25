@@ -1,0 +1,49 @@
+---
+import { announcements } from '../data/announcements';
+const fmt = (d: string) => new Date(d + 'T00:00:00+05:30').toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'Asia/Kolkata' });
+const today = new Date().toISOString().slice(0, 10);
+const items = announcements.filter((a) => a.date >= today);
+---
+{items.length > 0 && (
+  <aside class="ann" id="announce" aria-label="Important announcements">
+    <div class="wrap ann-in">
+      <span class="ann-tag"><i></i>Deadlines</span>
+      <div class="ann-list">
+        {items.map((a, i) => (
+          <p class={'ann-item' + (i === 0 ? ' on' : '')} data-date={a.date} title={a.note}>
+            <b>{a.tag}</b><span class="ann-txt">{a.text}</span><span class="ann-sh">{a.short}</span><em class="ann-left" aria-label={`Due ${fmt(a.date)}`}>{fmt(a.date)}</em>
+          </p>
+        ))}
+      </div>
+      <a class="ann-cta" href="#presence">Get audit-ready →</a>
+    </div>
+  </aside>
+)}
+<script>
+  const bar = document.getElementById('announce');
+  if (bar) {
+    // days left to the deadline, in India time
+    const ist = () => new Date(Date.now() + 5.5 * 3600 * 1000).toISOString().slice(0, 10);
+    const left = (d: string) => Math.round((Date.parse(d + 'T00:00:00Z') - Date.parse(ist() + 'T00:00:00Z')) / 86400000);
+    let items = [...bar.querySelectorAll<HTMLElement>('.ann-item')];
+    items.forEach((it) => {
+      const n = left(it.dataset.date || '');
+      if (n < 0) { it.remove(); return; }
+      const chip = it.querySelector('.ann-left');
+      if (chip) chip.textContent = n === 0 ? 'due today' : n === 1 ? '1 day left' : n + ' days left';
+      if (n <= 45) it.classList.add('soon');
+    });
+    items = [...bar.querySelectorAll<HTMLElement>('.ann-item')];
+    if (!items.length) bar.remove();
+    else {
+      let cur = 0, timer = 0, paused = false;
+      const show = (i: number) => { cur = i % items.length; items.forEach((it, k) => it.classList.toggle('on', k === cur)); };
+      const arm = () => { clearTimeout(timer); if (items.length > 1 && !paused && !matchMedia('(prefers-reduced-motion: reduce)').matches) timer = window.setTimeout(() => { show(cur + 1); arm(); }, 5000); };
+      show(0); arm();
+      bar.addEventListener('pointerenter', () => { paused = true; clearTimeout(timer); });
+      bar.addEventListener('pointerleave', () => { paused = false; arm(); });
+      bar.addEventListener('focusin', () => { paused = true; clearTimeout(timer); });
+      bar.addEventListener('focusout', () => { paused = false; arm(); });
+    }
+  }
+</script>

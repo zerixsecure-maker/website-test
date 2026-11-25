@@ -4,6 +4,8 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import NetworkBg from '../components/NetworkBg.astro';
 import LinkedIn from '../components/LinkedIn.astro';
+import Keywords from '../components/Keywords.astro';
+import Announcements from '../components/Announcements.astro';
 import Clients from '../components/Clients.astro';
 import Approach from '../components/Approach.astro';
 import Sectors from '../components/Sectors.astro';
@@ -22,6 +24,10 @@ const services = [
     i: '<ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/><path class="acc" d="M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/>' },
   { t: 'OT Security', d: 'Protection for industrial and operational technology where downtime is not an option.',
     i: '<path d="M3 21V10l6 4v-4l6 4V6h6v15z"/><path class="acc" d="M7 18h2M12 18h2M17 18h2"/>' },
+  { t: 'Secure Networking', d: 'Network security architecture, segmentation, firewall and access reviews that keep traffic and users where they belong.',
+    i: '<rect x="9" y="3" width="6" height="5" rx="1"/><rect x="3" y="16" width="6" height="5" rx="1"/><rect x="15" y="16" width="6" height="5" rx="1"/><path d="M12 8v4"/><path class="acc" d="M6 16v-4h12v4"/>' },
+  { t: 'Network Infrastructure Redesign', d: 'Re-architecting networks to remove weak points: secure-by-default design, segmentation and resilience built in.',
+    i: '<path d="M20 12a8 8 0 01-13.6 5.7"/><path d="M4 12a8 8 0 0113.6-5.7"/><path class="acc" d="M18 3v4h-4M6 21v-4h4"/>' },
   { t: 'Regulatory Audits', d: 'Cybersecurity audits mapped to mandates such as CSCRF, so you are ready when regulators ask.',
     i: '<path d="M4 20h16M6 20V10M10 20V10M14 20V10M18 20V10"/><path class="acc" d="M3 10l9-6 9 6z"/>' },
 ];
@@ -96,6 +102,8 @@ const services = [
       </div>
     </section>
 
+    <Keywords />
+    <Announcements />
     <LinkedIn />
 
     <Clients />
