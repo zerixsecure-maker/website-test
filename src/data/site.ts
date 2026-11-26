@@ -7,7 +7,7 @@ export const company = {
   hq: 'Shri Vallabh, Shop 25, Borivali West, Mumbai, Maharashtra',
 };
 
-// Optional: paste a form endpoint (e.g. Formspree https://formspree.io/f/xxxx) to receive enquiries directly.
+// Paste the Google Apps Script web app URL here (see docs/contact-form-apps-script.gs).
 // While empty, the contact form opens the visitor's email app with the message filled in.
 export const formEndpoint = '';
 
