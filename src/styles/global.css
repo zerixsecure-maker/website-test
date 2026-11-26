@@ -920,9 +920,9 @@ a.card:hover .card-go, a.card:focus-visible .card-go { opacity: 1; transform: no
 .t-cat > .t-a { display: flex; justify-content: space-between; align-items: center; padding: .55rem .8rem; border-radius: .55rem; color: var(--ink); font-size: .92rem; white-space: nowrap; }
 .t-a i { font-style: normal; color: var(--p-400); }
 .desk-nav .sub .t-a::after { display: none; }
-.tree-r { position: absolute; left: 16rem; top: 0; right: auto; width: 18.5rem; min-height: 100%; padding: .4rem .3rem .4rem 1.2rem; border-left: 1px solid var(--line); opacity: 0; visibility: hidden; transition: opacity .18s; display: grid; align-content: start; gap: .6rem; }
+.tree-r { position: absolute; left: 15.5rem; top: 0; right: auto; width: 19rem; min-height: 100%; padding: .4rem .3rem .4rem 1.2rem; border-left: 1px solid var(--line); opacity: 0; visibility: hidden; transition: opacity .15s .3s, visibility 0s .3s; display: grid; align-content: start; gap: .6rem; }
 .t-cat:hover > .t-a, .t-cat:focus-within > .t-a { background: var(--tint); color: var(--p-800); }
-.t-cat:hover > .tree-r, .t-cat:focus-within > .tree-r { opacity: 1; visibility: visible; z-index: 2; background: rgba(255,255,255,.98); }
+.t-cat:hover > .tree-r, .t-cat:focus-within > .tree-r { opacity: 1; visibility: visible; z-index: 2; background: rgba(255,255,255,.98); transition: opacity .15s .14s, visibility 0s .14s; }
 .tree-l:not(:hover):not(:focus-within) > .t-cat:first-child > .tree-r { opacity: 1; visibility: visible; }
 .tree-l:not(:hover):not(:focus-within) > .t-cat:first-child > .t-a { background: var(--tint); color: var(--p-800); }
 .t-head { display: block; font: 600 1rem 'Space Grotesk', sans-serif; color: var(--p-900); padding: .2rem .4rem; } .t-head small { display: block; font: 400 .78rem var(--sans); color: var(--muted); margin-top: .15rem; white-space: normal; }
@@ -1108,3 +1108,6 @@ a.card:hover .card-go, a.card:focus-visible .card-go { opacity: 1; transform: no
 @media (max-width: 35rem) { .team, .qgrid, .means, .bento { grid-template-columns: 1fr; } .qgrid { grid-template-columns: 1fr 1fr; } .qc { padding: 1.1rem .8rem; } }
 @media (prefers-reduced-motion: reduce) { .qb i { animation: none; } }
 .t-cat > .t-a { padding: .42rem .8rem; font-size: .9rem; } .tree-l { min-height: 0; } .tree-r { min-height: 100%; }
+
+
+@media (prefers-reduced-motion: reduce) { .tree-r, .t-cat:hover > .tree-r { transition: none; } }
