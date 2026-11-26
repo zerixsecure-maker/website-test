@@ -420,7 +420,7 @@ footer { padding: 1.5rem 0 2.75rem; color: var(--muted); font-size: .88rem; }
 .spanel ul { list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1.375rem 0 0; padding: 0; }
 .spanel li { font: 500 .74rem var(--mono); letter-spacing: .06em; padding: 0.4375rem 0.75rem; border-radius: 0.375rem; background: var(--tint); color: var(--p-800); }
 .sp-bar { grid-row: 2; height: 0.1875rem; border-radius: 2px; background: var(--line); margin-top: 1.125rem; overflow: hidden; }
-.sp-bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--p-600), var(--p-300)); animation: fill 8s linear forwards; }
+.sp-bar i { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--p-600), var(--p-300)); animation: fill 3s linear forwards; }
 
 /* ================= Approach: forensic board ================= */
 .viz2 { width: 100%; max-width: 28.75rem; height: auto; display: block; margin-left: auto; overflow: visible; --by: 56px; --lx: 300px; --ly: 108px; }

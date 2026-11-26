@@ -62,7 +62,8 @@ const sectors = [
       const bar = document.querySelector<HTMLElement>('.sp-bar i');
       const host = document.querySelector<HTMLElement>('.orbit-grid')!;
       const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-      let cur = 0, ang = 0, timer = 0, hover = false, visible = false;
+      let cur = 0, ang = 0, timer = 0, hover = false, visible = false, holdUntil = 0;
+      const AUTO = 3000, HOLD = 10000; // 3s per sector; after a click the rotation rests for 10s
       // Random order without repeats: shuffle every sector, play them all, then reshuffle (never the same one twice in a row).
       let bag: number[] = [];
       const nextRandom = () => {
@@ -72,16 +73,24 @@ const sectors = [
         }
         return bag.pop() as number;
       };
-      const show = (i: number) => {
+      const show = (i: number, dur = AUTO) => {
         const delta = ((i * 45 - ang) % 360 + 540) % 360 - 180;
         ang += delta; cur = i;
         orbit.style.setProperty('--ba', ang + 'deg');
         nodes.forEach((n, k) => n.classList.toggle('on', k === i));
         panels.forEach((p, k) => p.classList.toggle('on', k === i));
-        if (bar) { bar.style.animation = 'none'; void bar.offsetWidth; bar.style.animation = ''; }
+        if (bar) { bar.style.animation = 'none'; void bar.offsetWidth; bar.style.animation = ''; bar.style.animationDuration = dur + 'ms'; }
       };
-      const loop = () => { clearTimeout(timer); if (reduce || !visible) return; timer = window.setTimeout(() => { if (!hover) show(nextRandom()); loop(); }, 8000); };
-      nodes.forEach((n, i) => { n.addEventListener('click', () => { show(i); bag = bag.filter((k) => k !== i); loop(); }); n.addEventListener('mouseenter', () => { hover = true; show(i); }); n.addEventListener('mouseleave', () => { hover = false; loop(); }); });
+      const loop = () => {
+        clearTimeout(timer); if (reduce || !visible) return;
+        const wait = Math.max(AUTO, holdUntil - Date.now());
+        timer = window.setTimeout(() => { if (!hover) show(nextRandom()); loop(); }, wait);
+      };
+      nodes.forEach((n, i) => {
+        n.addEventListener('click', () => { holdUntil = Date.now() + HOLD; show(i, HOLD); bag = bag.filter((k) => k !== i); loop(); });
+        n.addEventListener('mouseenter', () => { hover = true; show(i, AUTO); });
+        n.addEventListener('mouseleave', () => { hover = false; loop(); });
+      });
       new IntersectionObserver(([e]) => { visible = e.isIntersecting; loop(); }, { threshold: 0.3 }).observe(host);
     }
   </script>
