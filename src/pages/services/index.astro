@@ -6,7 +6,7 @@ import Viz from '../../components/Viz.astro';
 import { services } from '../../data/services';
 import { icons } from '../../data/icons';
 import { company } from '../../data/site';
-const mail = `mailto:${company.email}?subject=${encodeURIComponent('Services enquiry')}`;
+const mail = `/contact/?topic=${encodeURIComponent('Services enquiry')}`;
 ---
 <Base title="Services | Zerix Securities" description="Audit, certifications, VAPT, data protection, OT and cloud security, regulatory audits, secure coding and managed security from Zerix Securities." path="/services/">
   <Header current="services" />

@@ -15,7 +15,7 @@ const rel = kids.length ? kids : sibs;
 const idx = allPages.findIndex((p) => p.slug === svc.slug);
 const v = (['a', 'b', 'c'] as const)[idx % 3];
 const crumbs = [{ n: 'Services', h: '/services/' }, ...(parent ? [{ n: parent.name, h: parent.href }] : []), { n: svc.name, h: svc.href }];
-const mail = `mailto:${company.email}?subject=${encodeURIComponent(svc.name + ' enquiry')}`;
+const mail = `/contact/?topic=${encodeURIComponent(svc.name)}`;
 const What = () => null;
 ---
 <Base title={`${svc.name} | Zerix Securities`} description={`${svc.tag} ${svc.need}`} path={svc.href}>

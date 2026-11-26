@@ -43,7 +43,7 @@ const here = (href?: string) => (href && current && href.replace(/\//g, '') === 
         ))}
       </ul>
     </nav>
-    <a href="/#presence" class="btn btn-primary">Contact us <span class="arr">→</span></a>
+    <a href="/contact/" class="btn btn-primary">Contact us <span class="arr">→</span></a>
     <button class="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="mnav"><i></i><i></i><i></i></button>
   </div>
   <nav class="mobile-nav" id="mnav" aria-label="Mobile">
@@ -64,7 +64,7 @@ const here = (href?: string) => (href && current && href.replace(/\//g, '') === 
       ) : (
         <li><a href={l.href} aria-current={here(l.href)}>{l.label}</a></li>
       ))}
-      <li><a href="/#presence" class="btn btn-primary">Contact us <span class="arr">→</span></a></li>
+      <li><a href="/contact/" class="btn btn-primary">Contact us <span class="arr">→</span></a></li>
     </ul>
   </nav>
 </header>

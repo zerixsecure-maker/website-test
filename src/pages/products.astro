@@ -6,7 +6,7 @@ import Viz from '../components/Viz.astro';
 import Widget from '../components/Widget.astro';
 import { products } from '../data/services';
 import { company } from '../data/site';
-const mail = `mailto:${company.email}?subject=${encodeURIComponent('Products enquiry')}`;
+const mail = `/contact/?topic=${encodeURIComponent('Products enquiry')}`;
 const w = { k: 'feed', t: 'Z Sites, security operations view', d: ['New alert: brute force on VPN', '!Ransomware behaviour on endpoint, isolated', 'Patch deployed to 120 devices', 'Device enrolled in MDM, policy applied', 'Ticket INC-2041 raised and assigned', 'Threat intel match checked, benign'] };
 ---
 <Base title="Products | Zerix Securities" description="Z Sites SOC platform, EDR/XDR, MDM, patch management and ITSM from Zerix Securities." path="/products/">

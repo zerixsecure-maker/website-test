@@ -7,6 +7,10 @@ export const company = {
   hq: 'Shri Vallabh, Shop 25, Borivali West, Mumbai, Maharashtra',
 };
 
+// Optional: paste a form endpoint (e.g. Formspree https://formspree.io/f/xxxx) to receive enquiries directly.
+// While empty, the contact form opens the visitor's email app with the message filled in.
+export const formEndpoint = '';
+
 export const linkedin = {
   companyUrl: 'https://www.linkedin.com/company/zerix-securities',
   // LinkedIn post -> "..." menu -> "Embed this post" -> copy the src="..." URL from the iframe code
