@@ -45,4 +45,9 @@ export const icons: Record<string, string> = {
   vciso: '<circle cx="50" cy="30" r="14"/><path d="M22 86c0-18 12-30 28-30s28 12 28 30z"/><path class="acc" d="M44 66l6 6 10-12"/>',
   access: '<circle cx="50" cy="50" r="38"/><circle class="acc" cx="50" cy="26" r="5"/><path d="M26 40h48M50 40v18M50 58L38 78M50 58l12 20"/>',
   stamp: '<path d="M38 56h24c0-8-4-12-4-22a8 8 0 10-16 0c0 10-4 14-4 22z"/><rect x="26" y="56" width="48" height="12" rx="3"/><path class="acc" d="M20 84h60"/>',
+  forensic: '<circle cx="42" cy="42" r="26"/><path d="M62 62l24 24" stroke-width="7"/><path class="acc" d="M30 46a12 12 0 0124 0M34 52c-1-4 0-8 2-11M42 54v-8a4 4 0 018 0"/>',
+  rootcause: '<circle class="acc" cx="50" cy="20" r="9"/><circle cx="24" cy="66" r="8"/><circle cx="50" cy="80" r="8"/><circle cx="76" cy="66" r="8"/><path d="M45 28L28 60M50 29v43M55 28l17 32"/>',
+  malware: '<circle cx="50" cy="50" r="22"/><path d="M50 8v14M50 78v14M8 50h14M78 50h14M20 20l10 10M70 70l10 10M80 20L70 30M30 70L20 80"/><circle class="acc" cx="42" cy="44" r="4"/><circle class="acc" cx="58" cy="44" r="4"/><path d="M40 60c6-5 14-5 20 0"/>',
+  reverse: '<path d="M30 30L12 50l18 20M70 30l18 20-18 20"/><path class="acc" d="M62 28H40a14 14 0 000 28h18"/><path class="acc" d="M52 20l-10 8 10 8"/>',
+  disk: '<ellipse cx="44" cy="22" rx="30" ry="10"/><path d="M14 22v44c0 6 13 10 30 10"/><path d="M74 22v14"/><path d="M14 44c0 6 13 10 30 10"/><circle class="acc" cx="68" cy="68" r="14"/><path class="acc" d="M78 78l10 10" stroke-width="6"/>',
 };

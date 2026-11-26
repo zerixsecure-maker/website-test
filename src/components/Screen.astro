@@ -15,10 +15,11 @@ const score = w.k === 'gauge' ? w.v : 60 + r(9, 30);
 const ser = (k: number, n = 14) => Array.from({ length: n }, (_, i) => 12 + r(k * 17 + i, 30) + i * 1.4);
 const path = (s: number[], W_ = 200, H_ = 60) => s.map((y, i) => `${i ? 'L' : 'M'}${((i * W_) / (s.length - 1)).toFixed(1)} ${(H_ - y).toFixed(1)}`).join('');
 const dn = (vals: number[]) => { let o = 0; const t = vals.reduce((a, b) => a + b, 0); return vals.map((v) => { const p = (v / t) * 100; const x = { p, o: -o }; o += p; return x; }); };
-const dark = ['siem', 'code', 'pipeline', 'ot', 'edr', 'proxy'].includes(type);
+const dark = ['siem', 'code', 'pipeline', 'ot', 'edr', 'proxy', 'forensic'].includes(type);
 const rail = [svc.icon, 'network', 'checklist', 'gauge', 'server'];
 const sev = ['#e0455b', '#f08a3c', '#e6c13a', '#4aa3df'];
 const rawReq = '<span class="k">POST</span> /api/orders HTTP/1.1\nHost: app.example.com\n\n{"id": "<span class="pay">1042 OR 1=1</span>"}\n\n<span class="k">HTTP/1.1 500</span> <span class="wn">SQL syntax error</span>';
+const hex = Array.from({ length: 5 }, (_, i) => `<span class="k">${(i * 16).toString(16).padStart(4, '0')}</span>  ` + Array.from({ length: 8 }, (_, k) => (r(i * 9 + k, 256)).toString(16).padStart(2, '0')).join(' ').replace(/^(.{0,3})/, (m) => i === 2 ? `<span class="pay">${m}</span>` : m)).join('\n');
 const rows2 = (a: any[]) => [...a, ...a];
 ---
 <div class={`zs ${dark ? 'dk' : ''} t-${type}`}>
@@ -119,6 +120,13 @@ const rows2 = (a: any[]) => [...a, ...a];
       <div class="alarm">⚠ {feed.find((f: any) => f.warn)?.t ?? 'Ransomware behaviour detected, host isolated'}</div>
       <div class="g2 sfill"><div class="cd grow"><h6>Devices</h6>{['LAPTOP-FIN-02', 'SRV-DB-01', 'LAPTOP-HR-07', 'SRV-WEB-03'].map((d, i) => <div class="tr"><span><i class="sdot" style={`background:${i === 0 ? '#e0455b' : '#43c59e'}`}></i>{d}</span><u class={`spl ${i === 0 ? 'hi' : 'ok'}`}>{i === 0 ? 'Isolated' : 'Healthy'}</u></div>)}</div>
         <div class="cd"><h6>Process tree</h6><div class="pt"><span>explorer.exe</span><span class="l1">winword.exe</span><span class="l2 bad">powershell.exe -enc …</span><span class="l3 bad">vssadmin delete shadows</span></div></div></div>
+    </>)}
+
+    {type === 'forensic' && (<>
+      <div class="kp">{[['Evidence items', r(1, 20, 12)], ['Images', r(2, 5, 3)], ['Hashes verified', '100%'], ['Timeline events', r(3, 400, 300)]].map(([l, v]) => <div><small>{l}</small><b>{v}</b></div>)}</div>
+      <div class="g2"><div class="cd grow"><h6>Evidence</h6>{['laptop-fin-02.E01', 'server-db-01.dd', 'phone-ceo.ufdr', 'cloud-audit.json'].map((f, i) => <div class="tr"><span>{f}</span><u class={`spl ${i === 2 ? 'md' : 'ok'}`}>{i === 2 ? 'Imaging' : 'Verified'}</u></div>)}</div>
+        <div class="cd grow raw"><h6>Hex view</h6><pre set:html={hex}></pre></div></div>
+      <div class="cd grow"><h6>Timeline</h6>{feed.slice(0, 4).map((f: any, i: number) => <div class="tr"><span>{String(22 + (i > 1 ? 1 : 0)).padStart(2, '0')}:{String(10 + r(i, 49)).padStart(2, '0')} · {f.t}</span><u class={`spl ${f.warn ? 'hi' : 'ok'}`}>{f.warn ? 'Flag' : 'Logged'}</u></div>)}</div>
     </>)}
 
     {type === 'ai' && (<>
