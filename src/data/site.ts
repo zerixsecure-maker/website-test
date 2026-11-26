@@ -4,6 +4,7 @@ export const company = {
   email: 'info@zerixsecurities.com',
   phone: '+91 932 11 11 544',
   phoneHref: '+919321111544',
+  emergencyEmail: 'emergency@zerixsecurities.com',
   hq: 'Shri Vallabh, Shop 25, Borivali West, Mumbai, Maharashtra',
 };
 
@@ -31,11 +32,12 @@ export const instagram = {
 };
 
 // Main navigation. An item with `children` becomes a dropdown (desktop) / grouped list (mobile).
-export const navLinks: { label: string; href?: string; children?: { label: string; href: string }[]; tree?: boolean }[] = [
+export const navLinks: { label: string; href?: string; children?: { label: string; href: string }[]; tree?: boolean; emergency?: boolean }[] = [
   { label: 'Company', children: [
     { label: 'Overview', href: '/company/overview/' }, { label: 'Our team', href: '/company/team/' }, { label: 'Qualifications', href: '/company/qualifications/' },
     { label: 'Our approach', href: '/#approach' }, { label: 'Sectors we serve', href: '/#sectors' }, { label: 'Clients', href: '/#clients' } ] },
   { label: 'Services', href: '/services/', tree: true },
   { label: 'Products', href: '/products/' },
   { label: 'Why Cyber', href: '/why-cyber/' },
+  { label: 'Emergency', emergency: true },
 ];

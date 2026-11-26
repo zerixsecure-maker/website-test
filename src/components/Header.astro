@@ -1,5 +1,5 @@
 ---
-import { navLinks } from '../data/site';
+import { navLinks, company } from '../data/site';
 import { services } from '../data/services';
 const { current = '' } = Astro.props;
 const grouped = (kids: any[]) => { const g: [string, any[]][] = []; kids.forEach((k) => { const n = k.group ?? ''; const f = g.find((x) => x[0] === n); f ? f[1].push(k) : g.push([n, [k]]); }); return g; };
@@ -13,7 +13,16 @@ const here = (href?: string) => (href && current && href.replace(/\//g, '') === 
     </a>
     <nav aria-label="Main">
       <ul class="desk-nav">
-        {navLinks.map((l) => l.tree ? (
+        {navLinks.map((l) => l.emergency ? (
+          <li class="has-sub has-emg">
+            <button type="button" class="sub-btn emg-btn" aria-haspopup="true" aria-expanded="false"><i class="emg-dot" aria-hidden="true"></i>{l.label}<svg viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            <div class="sub emg">
+              <div class="emg-h"><b>Security emergency?</b><span class="emg-live"><i></i>Available 24/7</span></div>
+              <a class="emg-l" href={`tel:${company.phoneHref}`}><svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.500 1.500a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg><span><small>Call</small>{company.phone}</span></a>
+              <a class="emg-l" href={`mailto:${company.emergencyEmail}?subject=${encodeURIComponent('Security emergency')}`}><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg><span><small>Email</small>{company.emergencyEmail}</span></a>
+            </div>
+          </li>
+        ) : l.tree ? (
           <li class="has-sub has-tree">
             <button type="button" class="sub-btn" aria-haspopup="true" aria-expanded="false">{l.label}<svg viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.5l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
             <div class="sub tree">
@@ -48,7 +57,11 @@ const here = (href?: string) => (href && current && href.replace(/\//g, '') === 
   </div>
   <nav class="mobile-nav" id="mnav" aria-label="Mobile">
     <ul>
-      {navLinks.map((l) => l.tree ? (
+      {navLinks.map((l) => l.emergency ? (
+        <li class="m-group m-emg"><span>Emergency · 24/7</span>
+          <ul><li><a href={`tel:${company.phoneHref}`}>{company.phone}</a></li><li><a href={`mailto:${company.emergencyEmail}`}>{company.emergencyEmail}</a></li></ul>
+        </li>
+      ) : l.tree ? (
         <li class="m-group"><span>{l.label}</span>
           <ul>
             <li><a href="/services/">All services</a></li>

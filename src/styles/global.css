@@ -1136,3 +1136,16 @@ a.card:hover .card-go, a.card:focus-visible .card-go { opacity: 1; transform: no
 @media (max-width: 61.25rem) { .ct-grid { grid-template-columns: 1fr; } }
 @media (max-width: 35rem) { .ct-row { grid-template-columns: 1fr; } .ct-form { padding: 1.3rem; } }
 @media (prefers-reduced-motion: reduce) { .ct-o i::after { animation: none; } }
+
+/* ---- emergency nav ---- */
+.emg-btn { color: #b3261e; font-weight: 500; } .emg-btn:hover, .has-emg.open .emg-btn { color: #8c1a14; }
+.emg-dot { width: .5rem; height: .5rem; border-radius: 50%; background: #d93025; position: relative; flex: none; } .emg-dot::after { content: ''; position: absolute; inset: -.3rem; border-radius: 50%; border: 1px solid #d93025; animation: emgp 2s ease-out infinite; }
+@keyframes emgp { from { transform: scale(.5); opacity: 1; } to { transform: scale(1.5); opacity: 0; } }
+.desk-nav .sub.emg { left: auto; right: -1rem; min-width: 23rem; padding: 1rem; display: grid; gap: .4rem; border-top: 3px solid #d93025; }
+.emg-h { display: flex; justify-content: space-between; align-items: center; gap: .8rem; padding: 0 .3rem .5rem; } .emg-h b { white-space: nowrap; font: 600 1rem 'Space Grotesk', sans-serif; color: var(--p-900); }
+.emg-live { display: inline-flex; align-items: center; gap: .4rem; font: 500 .62rem var(--mono); letter-spacing: .12em; text-transform: uppercase; color: #0e6b45; background: #e5f6ee; padding: .25rem .6rem; border-radius: 2rem; white-space: nowrap; } .emg-live i { width: .4rem; height: .4rem; border-radius: 50%; background: #1ea672; animation: emgb 1.4s ease-in-out infinite; }
+@keyframes emgb { 50% { opacity: .3; } }
+.desk-nav .sub .emg-l { display: flex; gap: .8rem; align-items: flex-start; padding: .7rem .6rem; border-radius: .7rem; white-space: normal; background: #fff5f4; } .desk-nav .sub .emg-l:hover { background: #fde8e6; }
+.emg-l svg { width: 1.25rem; flex: none; margin-top: .15rem; fill: none; stroke: #d93025; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; } .emg-l span { font-size: .95rem; color: var(--ink); white-space: nowrap; } .emg-l small { display: block; font: 500 .6rem var(--mono); letter-spacing: .16em; text-transform: uppercase; color: #b3261e; margin-bottom: .1rem; }
+.mobile-nav .m-emg > span { color: #b3261e; }
+@media (prefers-reduced-motion: reduce) { .emg-dot::after, .emg-live i { animation: none; } }
