@@ -9,7 +9,7 @@ export const company = {
 
 // Paste the Google Apps Script web app URL here (see docs/contact-form-apps-script.gs).
 // While empty, the contact form opens the visitor's email app with the message filled in.
-export const formEndpoint = '';
+export const formEndpoint = 'https://script.google.com/macros/s/AKfycbz1titirBn9AKY-2U5IoZ9FZxLgR1qbnQK60FldWSHEWM4fflrcKmwVy8OUwtpEncD0/exec';
 
 export const linkedin = {
   companyUrl: 'https://www.linkedin.com/company/zerix-securities',
