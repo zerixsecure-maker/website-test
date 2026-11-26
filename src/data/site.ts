@@ -39,5 +39,5 @@ export const navLinks: { label: string; href?: string; children?: { label: strin
   { label: 'Services', href: '/services/', tree: true },
   { label: 'Products', href: '/products/' },
   { label: 'Why Cyber', href: '/why-cyber/' },
-  { label: 'Emergency', emergency: true },
+  { label: 'Emergency', href: '/emergency/', emergency: true },
 ];

@@ -63,6 +63,15 @@ const sectors = [
       const host = document.querySelector<HTMLElement>('.orbit-grid')!;
       const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
       let cur = 0, ang = 0, timer = 0, hover = false, visible = false;
+      // Random order without repeats: shuffle every sector, play them all, then reshuffle (never the same one twice in a row).
+      let bag: number[] = [];
+      const nextRandom = () => {
+        if (!bag.length) {
+          bag = nodes.map((_, k) => k).filter((k) => k !== cur);
+          for (let k = bag.length - 1; k > 0; k--) { const j = Math.floor(Math.random() * (k + 1)); [bag[k], bag[j]] = [bag[j], bag[k]]; }
+        }
+        return bag.pop() as number;
+      };
       const show = (i: number) => {
         const delta = ((i * 45 - ang) % 360 + 540) % 360 - 180;
         ang += delta; cur = i;
@@ -71,8 +80,8 @@ const sectors = [
         panels.forEach((p, k) => p.classList.toggle('on', k === i));
         if (bar) { bar.style.animation = 'none'; void bar.offsetWidth; bar.style.animation = ''; }
       };
-      const loop = () => { clearTimeout(timer); if (reduce || !visible) return; timer = window.setTimeout(() => { if (!hover) show((cur + 1) % nodes.length); loop(); }, 4200); };
-      nodes.forEach((n, i) => { n.addEventListener('click', () => { show(i); loop(); }); n.addEventListener('mouseenter', () => { hover = true; show(i); }); n.addEventListener('mouseleave', () => { hover = false; loop(); }); });
+      const loop = () => { clearTimeout(timer); if (reduce || !visible) return; timer = window.setTimeout(() => { if (!hover) show(nextRandom()); loop(); }, 8000); };
+      nodes.forEach((n, i) => { n.addEventListener('click', () => { show(i); bag = bag.filter((k) => k !== i); loop(); }); n.addEventListener('mouseenter', () => { hover = true; show(i); }); n.addEventListener('mouseleave', () => { hover = false; loop(); }); });
       new IntersectionObserver(([e]) => { visible = e.isIntersecting; loop(); }, { threshold: 0.3 }).observe(host);
     }
   </script>

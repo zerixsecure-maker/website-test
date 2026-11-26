@@ -1,0 +1,57 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { company } from '../data/site';
+const steps = [['Call or email', 'Reach our response desk any time, day or night.'], ['Triage', 'We confirm what is happening and how far it has spread.'], ['Contain', 'Stop the damage: isolate systems, revoke access, block the attacker.'], ['Recover', 'Clean up, restore, and tell you what to fix so it does not return.']];
+const events = [
+  ['Ransomware activity', 'crit'], ['Suspicious login from new country', 'high'], ['Data leaving the network', 'crit'], ['Phishing link clicked', 'med'], ['Malware on a laptop', 'high'], ['Website defaced', 'crit'], ['Admin account misuse', 'high'], ['Server unreachable', 'med'],
+];
+const help = ['Ransomware & malware', 'Data breach', 'Account compromise', 'Phishing & fraud', 'Website or server attack', 'Insider misuse'];
+---
+<Base title="Cybersecurity Emergency Response 24/7 | Zerix Securities" description="Under attack? Reach the Zerix Securities emergency response desk 24/7 by phone or email for ransomware, data breach and other cyber incidents." path="/emergency/">
+  <Header current="emergency" />
+  <main id="main" class="co em">
+    <section class="em-h"><div class="wrap em-in">
+      <div class="em-copy">
+        <span class="em-pill"><i></i>Available 24/7</span>
+        <h1>Under attack? <span>Call us now.</span></h1>
+        <p class="co-lead">If you think you have been breached, act fast. Our team answers around the clock to help you contain it.</p>
+        <div class="em-cta">
+          <a class="btn btn-em" href={`tel:${company.phoneHref}`}>Call {company.phone}</a>
+          <a class="btn btn-ghost" href={`mailto:${company.emergencyEmail}?subject=${encodeURIComponent('Security emergency')}`}>Email the response desk</a>
+        </div>
+      </div>
+      <div class="em-viz" aria-hidden="true">
+        <div class="em-radar"><i class="rg r1"></i><i class="rg r2"></i><i class="rg r3"></i><i class="sw"></i><b class="bl b1"></b><b class="bl b2"></b><b class="bl b3"></b>
+          <div class="em-core"><svg viewBox="0 0 24 24"><path d="M12 3l9.500 16.500H2.500z"/><path d="M12 10v4.500M12 17.200v.1"/></svg></div>
+        </div>
+        <div class="em-feed">
+          <div class="em-fh"><span><i></i>Live alerts</span><em>Sample</em></div>
+          <ul>{events.map((e, i) => (<li class={e[1]} style={`--i:${i}`}><i></i><span>{e[0]}</span><b>{e[1] === 'crit' ? 'Critical' : e[1] === 'high' ? 'High' : 'Medium'}</b></li>))}</ul>
+        </div>
+      </div>
+    </div></section>
+
+    <section class="co-sec"><div class="wrap em-grid">
+      <article class="em-card reveal">
+        <div class="kicker">Reach us now</div>
+        <a class="em-l" href={`tel:${company.phoneHref}`}><svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.500 1.500a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg><span><small>Emergency phone</small>{company.phone}</span></a>
+        <a class="em-l" href={`mailto:${company.emergencyEmail}?subject=${encodeURIComponent('Security emergency')}`}><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg><span><small>Emergency email</small>{company.emergencyEmail}</span></a>
+        <div class="em-av"><i></i><span><b>24 hours, 7 days a week</b>Including weekends and holidays</span></div>
+      </article>
+      <article class="em-card reveal" style="--d:.08s">
+        <div class="kicker">What we help with</div>
+        <ul class="em-help">{help.map((h) => <li>{h}</li>)}</ul>
+        <p class="em-note">Not an emergency? Use the <a href="/contact/">contact form</a>.</p>
+      </article>
+    </div></section>
+
+    <section class="co-sec"><div class="wrap">
+      <div class="section-head reveal"><div class="kicker">How we respond</div><h2>Four steps from alarm to recovery.</h2></div>
+      <ol class="em-steps">{steps.map((s, i) => (<li class="reveal" style={`--d:${i * .08}s`}><b>{String(i + 1).padStart(2, '0')}</b><h3>{s[0]}</h3><p>{s[1]}</p></li>))}</ol>
+    </div></section>
+    <div class="wrap"><div class="ctab"><div><h2>Want to be ready before it happens?</h2><p>Incident response planning, monitoring and managed security.</p></div><div class="sp-btns"><a class="btn btn-primary" href="/services/managed-services/">Managed security <span class="arr">→</span></a><a class="btn btn-ghost" href="/contact/">Contact us</a></div></div></div>
+  </main>
+  <Footer />
+</Base>
